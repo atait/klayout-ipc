@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<klayout-macro>
+ <description>IPC initialization</description>
+ <category>pymacros</category>
+ <prolog/>
+ <epilog/>
+ <autorun>true</autorun>
+ <autorun-early>false</autorun-early>
+ <shortcut/>
+ <show-in-menu>false</show-in-menu>
+ <menu-path/>
+ <interpreter>python</interpreter>
+ <dsl-interpreter-name/>
+ <text>''' Inter-process communication initialization
+'''
+from os.path import dirname, realpath, join as pjoin
+
+
+def test_action():
+    pya.MessageBox.info("Information", "Button push: IPC", pya.MessageBox.Ok)
+
+
+# Add a button to the toolbar to run the server
+menu = pya.Application.instance().main_window().menu()
+if not(menu.is_menu("@toolbar.ipc_button")):
+    ipc_button_impl = pya.Action()
+    menu.insert_item("@toolbar.end", "ipc_button", ipc_button_impl)
+ipc_button_impl.title = "Inter-process\nCommunication"
+ipc_button_impl.on_triggered(test_action)
+ipc_button_impl.icon = pjoin(dirname(realpath(__file__)), "../icons", "lyipc.png")
+
+ </text>
+</klayout-macro>
