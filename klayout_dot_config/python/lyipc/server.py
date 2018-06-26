@@ -11,7 +11,7 @@ def quickmsg(msg):
     except ImportError:
         print(' IPC server:', msg)
         return
-    if pya.Application.instance().main_window().current_view():
+    if pya.Application.instance().main_window() is not None:
         pya.MessageBox.info('IPC server', msg, pya.MessageBox.Ok)
     else:
         print(' IPC server:', msg)
@@ -50,7 +50,7 @@ def start_serving(port=PORT):
             print('timeout')
             continue
         except KeyboardInterrupt:                           # TODO there is no interrupt in GUI mode
-            quickmsg('Stopping server due to KeyboardInterrupt')
+            quickmsg('Stopping -- KeyboardInterrupt')
             return
 
         # Connection has happened.
@@ -70,14 +70,21 @@ def start_serving(port=PORT):
             # Let the client know we are good
             connection.sendall('ACK'.encode())
         parse_remote_command(payload)
-    quickmsg('Stopping server due to program request')
+    quickmsg('Stopping -- program request')
 
 
 def parse_remote_command(cmdStr):
     quickmsg(f'received {cmdStr}')
+    if cmdStr == 'kill':
+        quickmsg('Stopping -- remote shutdown')
+        stop_serving()
 
 
 def stop_serving():
     global server_running
     server_running = False
+
+
+if __name__ == '__main__':
+    start_serving()
 
