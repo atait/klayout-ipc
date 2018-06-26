@@ -2,14 +2,20 @@
 PORT = 11031
 
 
-# This package should be compatible with GUI/batch klayout/python clients/servers. Reporting is different.
-def quickmsg(msg):
+def isGUI():
     try:
         import pya
     except ImportError:
-        print(' lyipc:', msg)
-        return
+        return False
     if pya.Application.instance().main_window() is not None:
+        return True
+    else:
+        return False
+
+
+# This package should be compatible with GUI/batch klayout/python clients/servers. Reporting is different for each
+def quickmsg(msg):
+    if isGUI():
         pya.MessageBox.info('lyipc', msg, pya.MessageBox.Ok)
     else:
         print(' lyipc:', msg)
