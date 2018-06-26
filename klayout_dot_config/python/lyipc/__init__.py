@@ -16,6 +16,7 @@ def isGUI():
 # This package should be compatible with GUI/batch klayout/python clients/servers. Reporting is different for each
 def quickmsg(msg):
     if isGUI():
+        import pya
         pya.MessageBox.info('lyipc', msg, pya.MessageBox.Ok)
     else:
         print(' lyipc:', msg)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <klayout-macro>
- <description>Send ping</description>
+ <description>Start server</description>
  <category>pymacros</category>
  <prolog/>
  <epilog/>
@@ -11,13 +11,10 @@
  <menu-path>@toolbar.ipc_button.end</menu-path>
  <interpreter>python</interpreter>
  <dsl-interpreter-name/>
- <text>''' Inter-process communication ping
+ <text>''' Inter-process communication stop server
 '''
-
-from lyipc import quickmsg
-from lyipc.client import send
-quickmsg('Application sending "Hello over there"')
-send("Hello over there")
+from lyipc.server import start_serving
+start_serving()
 
  </text>
 </klayout-macro>
