@@ -2,19 +2,7 @@ import socket
 import time
 import sys
 import os
-from . import PORT
-
-
-def quickmsg(msg):
-    try:
-        import pya
-    except ImportError:
-        print(' IPC server:', msg)
-        return
-    if pya.Application.instance().main_window() is not None:
-        pya.MessageBox.info('IPC server', msg, pya.MessageBox.Ok)
-    else:
-        print(' IPC server:', msg)
+from . import PORT, quickmsg
 
 
 global server_running
@@ -50,7 +38,7 @@ def start_serving(port=PORT):
             print('timeout')
             continue
         except KeyboardInterrupt:                           # TODO there is no interrupt in GUI mode
-            quickmsg('Stopping -- KeyboardInterrupt')
+            quickmsg('Stopping server -- KeyboardInterrupt')
             return
 
         # Connection has happened.
@@ -70,13 +58,13 @@ def start_serving(port=PORT):
             # Let the client know we are good
             connection.sendall('ACK'.encode())
         parse_remote_command(payload)
-    quickmsg('Stopping -- program request')
+    quickmsg('Stopping server -- program request')
 
 
 def parse_remote_command(cmdStr):
     quickmsg(f'received {cmdStr}')
     if cmdStr == 'kill':
-        quickmsg('Stopping -- remote shutdown')
+        quickmsg('Stopping server -- remote shutdown')
         stop_serving()
 
 
