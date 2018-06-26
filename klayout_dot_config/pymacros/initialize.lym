@@ -13,20 +13,18 @@
  <dsl-interpreter-name/>
  <text>''' Inter-process communication initialization
 '''
+
 from os.path import dirname, realpath, join as pjoin
+from lyipc.server import toggle_server
 
 
-def test_action():
-    pya.MessageBox.info("Information", "Button push: IPC", pya.MessageBox.Ok)
-
-
-# Add a button to the toolbar to run the server
+# Add a button to the toolbar that runs the server
 menu = pya.Application.instance().main_window().menu()
 if not(menu.is_menu("@toolbar.ipc_button")):
     ipc_button_impl = pya.Action()
     menu.insert_item("@toolbar.end", "ipc_button", ipc_button_impl)
 ipc_button_impl.title = "Inter-process\nCommunication"
-ipc_button_impl.on_triggered(test_action)
+ipc_button_impl.on_triggered(toggle_server)
 ipc_button_impl.icon = pjoin(dirname(realpath(__file__)), "../icons", "lyipc.png")
 
  </text>
