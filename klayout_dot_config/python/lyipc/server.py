@@ -20,6 +20,10 @@ class KlayoutServer(pya.QTcpServer):
                 # connection.waitForReadyRead(1000)
                 if connection.canReadLine():
                     line = connection.readLine()
+                    # try:
+                    #     line = bytes(line).decode('utf-8')
+                    # except:
+                    #     pass
                     payload = line.rstrip('\n').rstrip('\r')
                     connection.write('ACK')
                 else:

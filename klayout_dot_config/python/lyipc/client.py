@@ -5,8 +5,12 @@ from lyipc import PORT, isGSI
 
 if not isGSI():
     print('Warning: pya will not be available')
+    try:
+        from PyQt5.QtNetwork import QTcpSocket
+    except ImportError as e:
+        print('No PyQt5 found. You have to run this script from klayout\'s interpreter')
 else:
-    import pya
+    from pya import QTcpSocket
 
 def reload():
     send('reload view')
@@ -21,18 +25,13 @@ def kill():
 
 def send(message='ping 1234', port=PORT):
     ''' Sends a raw message '''
-    if isGSI():
-        psock = pya.QTcpSocket()
-    else:
-        raise NotImplementedError('non-GSI')
+    psock = QTcpSocket()
     ha = 'localhost'
     # import pdb; pdb.set_trace()
     psock.connectToHost(ha, port)
     if psock.waitForConnected():
-        psock.write(message + '\r\n')
-        x = psock.waitForReadyRead(3000)
-        ret = psock.readLine()
-        # if psock.readBytes() == 0 or ret != 'ACK':
-        #     raise Exception('Not acknowledged')
+        psock.write((message + '\r\n'))#.encode())
+        if not psock.waitForReadyRead(3000) or not psock.readLine().startswith('ACK'):
+            raise Exception('Not acknowledged')
     else:
         print(f'Connection Fail! (tried {ha}:{port})')

@@ -11,9 +11,9 @@ def parse_command(cmdStr):
         print(f'Received {cmdStr}')
         return
 
-    if cmdStr == 'kill':
-        quickmsg('Stopping server -- remote shutdown')
-        pya.Application.exit()
+    # if cmdStr == 'kill':
+    #     quickmsg('Stopping server -- remote shutdown')
+    #     pya.Application.exit(pya.Application.instance())
 
     elif cmdStr == 'reload view':
         main = pya.Application.instance().main_window()
