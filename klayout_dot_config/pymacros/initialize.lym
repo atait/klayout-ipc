@@ -7,8 +7,8 @@
  <autorun>true</autorun>
  <autorun-early>false</autorun-early>
  <shortcut/>
- <show-in-menu>false</show-in-menu>
- <menu-path/>
+ <show-in-menu>true</show-in-menu>
+ <menu-path>help_menu.end</menu-path>
  <interpreter>python</interpreter>
  <dsl-interpreter-name/>
  <text>''' Inter-process communication initialization
@@ -17,9 +17,11 @@
 from os.path import dirname, realpath, join as pjoin
 import sys
 import lyipc
+from lyipc import quickmsg
 from lyipc.server import start_serving
 
-sys.path.append(dirname(lyipc.__path__))
+# sys.path.append(dirname(lyipc.__path__))
+quickmsg('lyipc initializing')
 
 # Add a button to the toolbar that runs the server
 menu = pya.Application.instance().main_window().menu()
@@ -32,3 +34,4 @@ ipc_button_impl.icon = pjoin(dirname(realpath(__file__)), "../icons", "lyipc.png
 
  </text>
 </klayout-macro>
+#

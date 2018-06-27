@@ -1,9 +1,14 @@
+from __future__ import print_function
 import socket
 from . import PORT
 
 
-def remotewrite(filename):
+def remotewrite():
     send('reload view')
+
+
+def remoteload(filename):
+    send(f'load {filename}')
 
 
 def kill():
