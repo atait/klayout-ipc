@@ -20,9 +20,6 @@ import lyipc
 from lyipc import quickmsg
 from lyipc.server import start_serving
 
-# sys.path.append(dirname(lyipc.__path__))
-quickmsg('lyipc initializing')
-
 # Add a button to the toolbar that runs the server
 menu = pya.Application.instance().main_window().menu()
 if not(menu.is_menu("@toolbar.ipc_button")):
@@ -32,6 +29,7 @@ ipc_button_impl.title = "Inter-process\nCommunication"
 ipc_button_impl.on_triggered(start_serving)
 ipc_button_impl.icon = pjoin(dirname(realpath(__file__)), "../icons", "lyipc.png")
 
+# pya.Application.instance().main_window().message('lyipc initialized',1000)
+
  </text>
 </klayout-macro>
-#

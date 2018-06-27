@@ -4,7 +4,7 @@
 '''
 import pya
 import lyipc
-from lyipc.client import remotewrite, remoteload
+from lyipc.client import remotewrite, remoteload, send
 import time
 import os
 
@@ -19,6 +19,9 @@ box = pya.DBox(pya.DPoint(0, 0), pya.DPoint(20, 20))
 TOP.shapes(l1).insert(box)
 
 layout.write(gdsname)
+send('Preparing to send')
+time.sleep(2)
+
 remoteload(gdsname)
 
 print('Sleeping')

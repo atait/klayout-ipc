@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<klayout-macro>
+ <description>Start server</description>
+ <category>pymacros</category>
+ <prolog/>
+ <epilog/>
+ <autorun>false</autorun>
+ <autorun-early>false</autorun-early>
+ <shortcut/>
+ <show-in-menu>true</show-in-menu>
+ <menu-path>@toolbar.ipc_button.end</menu-path>
+ <interpreter>python</interpreter>
+ <dsl-interpreter-name/>
+ <text>''' Inter-process communication stop server
+'''
+from lyipc.server import start_serving
+start_serving()
+
+ </text>
+</klayout-macro>

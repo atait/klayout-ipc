@@ -9,6 +9,7 @@ def isGSI():
         return False
 
 def isGUI():
+    import pya
     if isGSI() and pya.Application.instance().main_window() is not None:
         return True
     else:

@@ -2,10 +2,10 @@
     Current state: only way to stop serving is close the application
 '''
 import socket
-import threading
+import pya
 
 import lyipc
-from . import PORT, quickmsg
+from lyipc import PORT, quickmsg
 
 
 global server_running
@@ -55,8 +55,8 @@ def start_serving(port=PORT):
     # Check for existing one
     global server_running
     if server_running:
-        return
-        # stop_serving()
+        quickmsg('Server already running')
+        stop_serving()
     server_running = True
 
     KlayoutServer()
