@@ -2,14 +2,12 @@
     Current state: only way to stop serving is close the application
 '''
 import socket
-import pya
-
 import lyipc
-from lyipc import PORT, quickmsg
+from lyipc import PORT, quickmsg, isGSI, isGUI
 
-
-global server_running
-server_running = False
+if not isGSI():
+    raise RuntimeError('Non-klayout serving does not make sense')
+import pya
 
 
 class KlayoutServer(pya.QTcpServer):
@@ -27,8 +25,6 @@ class KlayoutServer(pya.QTcpServer):
                 else:
                     connection.waitForReadyRead(500)
 
-            print('payload=', payload)
-
             # automatically delete when disconnected
             connection.disconnectFromHost()
             signal = pya.qt_signal("disconnected()")
@@ -38,8 +34,10 @@ class KlayoutServer(pya.QTcpServer):
             # Do something with what was received
             from lyipc.interpreter import parse_command
             parse_command(payload)
+
         except Exception as ex: 
-          print("ERROR " + str(ex))
+          quickmsg("ERROR " + str(ex))
+          raise
 
     def __init__(self, port=PORT, parent=None):
         pya.QTcpServer.__init__(self, parent)
