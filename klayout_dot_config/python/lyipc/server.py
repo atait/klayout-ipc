@@ -7,29 +7,22 @@ import pya
 import lyipc
 from lyipc import PORT, quickmsg
 
-
-global server_running
-server_running = False
-
-
 class KlayoutServer(pya.QTcpServer):
-    def __init__(self, port=PORT, parent=None):
-        pya.QTcpServer.__init__(self, parent)
-        ha = pya.QHostAddress()
-        self.listen(ha, port)
-        self.newConnection(self.new_connection)
-
     def new_connection(self):
         try:
             # Handle incoming connection
             connection = self.nextPendingConnection()
             payload = ''
             while connection.isOpen() and connection.state() == pya.QTcpSocket.ConnectedState:
-                connection.waitForReadyRead(1000)
+                # connection.waitForReadyRead(1000)
                 if connection.canReadLine():
-                  line = connection.readLine()
-                  payload += line
-                  connection.write('ACK')
+                    line = connection.readLine()
+                    payload = line
+                    connection.write('ACK')
+                else:
+                    connection.waitForReadyRead(500)
+
+            quickmsg('payload=', payload)
 
             # automatically delete when disconnected
             connection.disconnectFromHost()
@@ -41,27 +34,16 @@ class KlayoutServer(pya.QTcpServer):
             from lyipc.interpreter import parse_command
             parse_command(payload)
         except Exception as ex: 
-          print("ERROR " + str(ex))
+            print("ERROR " + str(ex))
 
+    def __init__(self, port=PORT, parent=None):
+        pya.QTcpServer.__init__(self, parent)
+        ha = pya.QHostAddress()
+        self.listen(ha, port)
+        self.newConnection(self.new_connection)
 
-def stop_serving():
-    global server_running
-    server_running = False
+KlayoutServer()
 
-
-def start_serving(port=PORT):
-    ''' 
-    '''
-    # Check for existing one
-    global server_running
-    if server_running:
-        quickmsg('Server already running')
-        stop_serving()
-    server_running = True
-
-    KlayoutServer()
-
-
-if __name__ == '__main__':
-    start_serving()
+def start_serving():
+    print('a')
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <klayout-macro>
- <description>Start server</description>
+ <description>IPC start server</description>
  <category>pymacros</category>
  <prolog/>
  <epilog/>
@@ -11,10 +11,14 @@
  <menu-path>@toolbar.ipc_button.end</menu-path>
  <interpreter>python</interpreter>
  <dsl-interpreter-name/>
- <text>''' Inter-process communication stop server
+ <text>''' Inter-process communication start
 '''
-from lyipc.server import start_serving
-start_serving()
+
+from lyipc import quickmsg
+from lyipc.server import KlayoutServer
+
+quickmsg('Starting')
+KlayoutServer()
 
  </text>
 </klayout-macro>

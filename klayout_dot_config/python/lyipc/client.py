@@ -20,10 +20,14 @@ def send(message='ping 1234', port=PORT):
     import pya
     psock = pya.QTcpSocket()
     psock.connectToHost('localhost', port)
-    if psock.waitForConnected():
+    if psock.waitForConnected(1000):
         print('Connection made')
         psock.write(message + '\r\n')
-        if not psock.waitForReadyRead(3000) or psock.readAll() != 'ACK':
-            raise Exception('Not acknowledged')
+        psock.waitForReadyRead(3000)
+        ret = psock.readAll()
+        # if psock.readBytes() == 0 or ret != 'ACK':
+        #     raise Exception('Not acknowledged')
+    else:
+        print('Connection Fail!')
 
-send()
+# send()

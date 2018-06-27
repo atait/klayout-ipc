@@ -8,29 +8,44 @@ from lyipc.client import remotewrite, remoteload, send
 import time
 import os
 
-gdsname = os.path.realpath('box.gds')
-layout = pya.Layout()
-layout.dbu = 0.001
-TOP = layout.create_cell('TOP')
+# import pya
+# psock = pya.QTcpSocket()
+# psock.connectToHost('localhost', 8082)
+# if psock.waitForConnected():
+#     print('Connection made')
+#     psock.write('ping' + '\r\n')
+#     psock.waitForReadyRead(3000)
+#     psock.readAll()
+#     if psock.readBytes() == 0 or ret != 'ACK':
+#         raise Exception('Not acknowledged')
+# else:
+#     print('Connection Fail!')
 
-l1 = layout.insert_layer(pya.LayerInfo(1, 0))
+# import pdb; pdb.set_trace()
 
-box = pya.DBox(pya.DPoint(0, 0), pya.DPoint(20, 20))
-TOP.shapes(l1).insert(box)
+# gdsname = os.path.realpath('box.gds')
+# layout = pya.Layout()
+# layout.dbu = 0.001
+# TOP = layout.create_cell('TOP')
 
-layout.write(gdsname)
+# l1 = layout.insert_layer(pya.LayerInfo(1, 0))
+
+# box = pya.DBox(pya.DPoint(0, 0), pya.DPoint(20, 20))
+# TOP.shapes(l1).insert(box)
+
+# layout.write(gdsname)
 send('Preparing to send')
-time.sleep(2)
+# time.sleep(2)
 
-remoteload(gdsname)
+# remoteload(gdsname)
 
-print('Sleeping')
-time.sleep(3)
+# print('Sleeping')
+# time.sleep(3)
 
-box2 = pya.DBox(pya.DPoint(20, 20), pya.DPoint(40, 40))
-TOP.shapes(l1).insert(box2)
+# box2 = pya.DBox(pya.DPoint(20, 20), pya.DPoint(40, 40))
+# TOP.shapes(l1).insert(box2)
 
-layout.write(gdsname)
-remoteload(gdsname)
+# layout.write(gdsname)
+# remoteload(gdsname)
 
-print('Exiting')
+# print('Exiting')

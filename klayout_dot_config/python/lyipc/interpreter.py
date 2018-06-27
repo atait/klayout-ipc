@@ -4,11 +4,13 @@ import lyipc.server
 import os
 
 def parse_command(cmdStr):
+    # quickmsg(f'Received {cmdStr}')
+    # return
     if cmdStr == 'kill':
         quickmsg('Stopping server -- remote shutdown')
         import pya
         pya.Application.exit()
-    elif cmdStr == 'reload view' and isGUI():
+    elif cmdStr == 'reload view':
         import pya
         main = pya.Application.instance().main_window()
         main.cm_reload()
