@@ -1,5 +1,5 @@
 # import pya
-PORT = 8082
+PORT = 11078
 
 def isGSI():
     try:

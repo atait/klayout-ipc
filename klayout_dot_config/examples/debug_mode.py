@@ -10,14 +10,14 @@ import os
 
 # import pya
 # psock = pya.QTcpSocket()
-# psock.connectToHost('localhost', 8082)
+# psock.connectToHost('localhost', 11078)
 # if psock.waitForConnected():
 #     print('Connection made')
 #     psock.write('ping' + '\r\n')
 #     psock.waitForReadyRead(3000)
 #     psock.readAll()
-#     if psock.readBytes() == 0 or ret != 'ACK':
-#         raise Exception('Not acknowledged')
+# #     if psock.readBytes() == 0 or ret != 'ACK':
+# #         raise Exception('Not acknowledged')
 # else:
 #     print('Connection Fail!')
 

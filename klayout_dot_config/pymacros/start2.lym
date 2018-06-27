@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <klayout-macro>
- <description>IPC start server</description>
+ <description>IPC start server2</description>
  <category>pymacros</category>
  <prolog/>
  <epilog/>
  <autorun>false</autorun>
  <autorun-early>false</autorun-early>
- <shortcut>Ctrl+9</shortcut>
+ <shortcut>Ctrl+8</shortcut>
  <show-in-menu>true</show-in-menu>
  <menu-path>@toolbar.ipc_button.end</menu-path>
  <interpreter>python</interpreter>
  <dsl-interpreter-name/>
  <text>''' Inter-process communication start
 '''
-from lyipc.server import KlayoutServer
-server = KlayoutServer()  # The assignment is absolutely essential
 
+
+from lyipc.server import KlayoutServer
+
+
+# Start the screenshot server 
+server = KlayoutServer()
  </text>
 </klayout-macro>

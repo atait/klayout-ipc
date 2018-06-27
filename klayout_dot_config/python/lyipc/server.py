@@ -7,6 +7,11 @@ import pya
 import lyipc
 from lyipc import PORT, quickmsg
 
+
+global server_running
+server_running = False
+
+
 class KlayoutServer(pya.QTcpServer):
     def new_connection(self):
         try:
@@ -22,7 +27,7 @@ class KlayoutServer(pya.QTcpServer):
                 else:
                     connection.waitForReadyRead(500)
 
-            quickmsg('payload=', payload)
+            print('payload=', payload)
 
             # automatically delete when disconnected
             connection.disconnectFromHost()
@@ -34,16 +39,35 @@ class KlayoutServer(pya.QTcpServer):
             from lyipc.interpreter import parse_command
             parse_command(payload)
         except Exception as ex: 
-            print("ERROR " + str(ex))
+          print("ERROR " + str(ex))
 
     def __init__(self, port=PORT, parent=None):
         pya.QTcpServer.__init__(self, parent)
         ha = pya.QHostAddress()
         self.listen(ha, port)
         self.newConnection(self.new_connection)
+        quickmsg(f'Server initialized with {ha}, {port}')
 
-KlayoutServer()
 
-def start_serving():
-    print('a')
+
+def stop_serving():
+    global server_running
+    server_running = False
+
+
+def start_serving(port=PORT):
+    ''' 
+    '''
+    # Check for existing one
+    # global server_running
+    # if server_running:
+    #     quickmsg('Server already running')
+    #     stop_serving()
+    # server_running = True
+    pass
+    # KlayoutServer()
+
+
+# if __name__ == '__main__':
+#     start_serving()
 
