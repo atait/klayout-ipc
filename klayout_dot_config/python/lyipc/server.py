@@ -16,13 +16,14 @@ class KlayoutServer(pya.QTcpServer):
             # Handle incoming connection
             connection = self.nextPendingConnection()
             message = 'null'
+            # import pdb; pdb.set_trace()
             while connection.isOpen() and connection.state() == pya.QTcpSocket.ConnectedState:
-                # connection.waitForReadyRead(1000)
+                # if connection.waitForReadyRead():
                 if connection.canReadLine():
                     payload = connection.readLine()
-                    # quickmsg('Got a ' + str(type(line)))
+                    # quickmsg('Got a ' + str(type(payload)))
                     # try:
-                    #     line = bytes(line).decode('utf-8')
+                    #     line = bytes(payload).decode('utf-8')
                     # except:
                     #     pass
                     message = payload.rstrip('\n').rstrip('\r')
