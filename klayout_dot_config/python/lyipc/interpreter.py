@@ -19,6 +19,7 @@ def parse_command(cmdStr):
         filename = os.path.realpath(filename)
         import pya
         main = pya.Application.instance().main_window()
-        view = main.load_layout(filename, 1)
+        quickmsg(filename)
+        view = main.load_layout(filename, 0)
     else:
         quickmsg(f'Received {cmdStr}')

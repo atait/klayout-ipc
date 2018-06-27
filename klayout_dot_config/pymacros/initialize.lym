@@ -28,7 +28,7 @@ ipc_button_impl.title = "Inter-process\nCommunication"
 ipc_button_impl.on_triggered(dummy)
 ipc_button_impl.icon = pjoin(dirname(realpath(__file__)), "../icons", "lyipc.png")
 
-pya.Application.instance().main_window().message('lyipc initialized',4000)
+pya.Application.instance().main_window().message('lyipc initialized',1000)
 
  </text>
 </klayout-macro>

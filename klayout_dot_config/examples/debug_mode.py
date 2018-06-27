@@ -8,29 +8,30 @@ from lyipc.client import remotewrite, remoteload, send
 import time
 import os
 
-# gdsname = os.path.realpath('box.gds')
-# layout = pya.Layout()
-# layout.dbu = 0.001
-# TOP = layout.create_cell('TOP')
+gdsname = os.path.realpath('box.gds')
+layout = pya.Layout()
+layout.dbu = 0.001
+TOP = layout.create_cell('TOP')
 
-# l1 = layout.insert_layer(pya.LayerInfo(1, 0))
+l1 = layout.insert_layer(pya.LayerInfo(1, 0))
 
-# box = pya.DBox(pya.DPoint(0, 0), pya.DPoint(20, 20))
-# TOP.shapes(l1).insert(box)
+box = pya.DBox(pya.DPoint(0, 0), pya.DPoint(20, 20))
+TOP.shapes(l1).insert(box)
 
-# layout.write(gdsname)
+layout.write(gdsname)
 send('Preparing to send')
 # time.sleep(2)
 
-# remoteload(gdsname)
+remoteload(gdsname)
 
-# print('Sleeping')
+print('Sleeping')
 # time.sleep(3)
 
-# box2 = pya.DBox(pya.DPoint(20, 20), pya.DPoint(40, 40))
-# TOP.shapes(l1).insert(box2)
+for i in range(10):
+    box2 = pya.DBox(pya.DPoint(2 * i, 2 * i), pya.DPoint(40, 40))
+    TOP.shapes(l1).insert(box2)
+    layout.write(gdsname)
+    remoteload(gdsname)
+    time.sleep(0.2)
 
-# layout.write(gdsname)
-# remoteload(gdsname)
-
-# print('Exiting')
+print('Exiting')

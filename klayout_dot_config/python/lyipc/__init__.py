@@ -20,6 +20,7 @@ def isGUI():
 def quickmsg(msg):
     if isGUI():
         import pya
-        pya.MessageBox.info('lyipc', msg, pya.MessageBox.Ok)
+        # pya.MessageBox.info('lyipc', msg, pya.MessageBox.Ok)
+        pya.Application.instance().main_window().message(f'lyipc: {msg}', 2000)
     else:
         print(' lyipc:', msg)

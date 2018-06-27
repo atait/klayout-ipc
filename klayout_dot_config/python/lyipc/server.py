@@ -22,7 +22,7 @@ class KlayoutServer(pya.QTcpServer):
                 # connection.waitForReadyRead(1000)
                 if connection.canReadLine():
                     line = connection.readLine()
-                    payload = line
+                    payload = line.rstrip('\n').rstrip('\r')
                     connection.write('ACK')
                 else:
                     connection.waitForReadyRead(500)
