@@ -1,13 +1,15 @@
 # import pya
-PORT = 11031
+PORT = 8082
 
-
-def isGUI():
+def isGSI():
     try:
         import pya
+        return True
     except ImportError:
         return False
-    if pya.Application.instance().main_window() is not None:
+
+def isGUI():
+    if isGSI() and pya.Application.instance().main_window() is not None:
         return True
     else:
         return False

@@ -7,13 +7,15 @@
  <autorun>false</autorun>
  <autorun-early>false</autorun-early>
  <shortcut/>
- <show-in-menu>true</show-in-menu>
+ <show-in-menu>false</show-in-menu>
  <menu-path>@toolbar.ipc_button.end</menu-path>
  <interpreter>python</interpreter>
  <dsl-interpreter-name/>
- <text>''' Inter-process communication stop server
+ <text>''' Inter-process communication start server
 '''
 from lyipc.server import start_serving
+from lyipc import quickmsg
+quickmsg('Starting lyipc server')
 start_serving()
 
  </text>

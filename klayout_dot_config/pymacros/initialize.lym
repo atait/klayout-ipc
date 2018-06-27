@@ -15,8 +15,11 @@
 '''
 
 from os.path import dirname, realpath, join as pjoin
+import sys
+import lyipc
 from lyipc.server import start_serving
 
+sys.path.append(dirname(lyipc.__path__))
 
 # Add a button to the toolbar that runs the server
 menu = pya.Application.instance().main_window().menu()

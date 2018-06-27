@@ -1,17 +1,47 @@
+''' Used QTcpServer
+    Current state: only way to stop serving is close the application
+'''
 import socket
 import threading
 
 import lyipc
-from . import PORT, quickmsg, isGUI
+from . import PORT, quickmsg
 
 
 global server_running
 server_running = False
-def toggle_server():
-    if server_running:
-        stop_serving()
-    else:
-        start_serving()
+
+
+class KlayoutServer(pya.QTcpServer):
+    def __init__(self, port=PORT, parent=None):
+        pya.QTcpServer.__init__(self, parent)
+        ha = pya.QHostAddress()
+        self.listen(ha, port)
+        self.newConnection(self.new_connection)
+
+    def new_connection(self):
+        try:
+            # Handle incoming connection
+            connection = self.nextPendingConnection()
+            payload = ''
+            while connection.isOpen() and connection.state() == pya.QTcpSocket.ConnectedState:
+                connection.waitForReadyRead(1000)
+                if connection.canReadLine():
+                  line = connection.readLine()
+                  payload += line
+                  connection.write('ACK')
+
+            # automatically delete when disconnected
+            connection.disconnectFromHost()
+            signal = pya.qt_signal("disconnected()")
+            slot = pya.qt_slot("deleteLater()")
+            pya.QObject.connect(connection, signal, connection, slot)
+
+            # Do something with what was received
+            from lyipc.interpreter import parse_command
+            parse_command(payload)
+        except Exception as ex: 
+          print("ERROR " + str(ex))
 
 
 def stop_serving():
@@ -19,80 +49,17 @@ def stop_serving():
     server_running = False
 
 
-def start_serving(port=PORT, threaded=True):
-    ''' Basic idea here is to spawn a new thread that listens for messages sent by lyipc clients.
-        The extra thread is needed to avoid blocking, so the GUI will keep working.
-        This is not always desireable if you are using command-line server.
-
-        threaded=None will make a best guess
+def start_serving(port=PORT):
+    ''' 
     '''
     # Check for existing one
     global server_running
     if server_running:
-        quickmsg('Server is already running')
         return
+        # stop_serving()
     server_running = True
 
-    if threaded:
-        server_thread = ServerThread(port)
-        server_thread.start()
-        return server_thread
-    else:
-        ServerThread.serve_loop(port)
-        return None
-
-
-class ServerThread(threading.Thread):
-    def __init__(self, port=PORT):
-        threading.Thread.__init__(self)
-        self.port = port
-        self.daemon = True
-
-    def run(self):
-        self.serve_loop(self.port)
-
-    @staticmethod
-    def serve_loop(port):
-        # Create a TCP/IP socket and bind to a port
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_address = ('', port)
-        sock.bind(server_address)
-        quickmsg(f'Starting server on port {port}')
-
-        # Listen for incoming connections
-        sock.settimeout(1.0)  # this makes sure that it doesn't block indefinitely. We have to check if the server was told to stop
-        sock.listen(1)
-        while server_running:
-            try:
-                # Wait for a connection
-                connection, client_address = sock.accept()
-            except socket.timeout:
-                print('timeout')
-                continue
-            except KeyboardInterrupt:                           # TODO there is no interrupt in GUI mode
-                quickmsg('Stopping server -- KeyboardInterrupt')
-                stop_serving()
-                return
-
-            # Connection has happened.
-            with connection:
-                # Read the payload in chunks
-                payload = ''
-                while True:
-                    try:
-                        data = connection.recv(16).decode()
-                    except:
-                        payload += '...Corrupted'
-                        raise IOError(f'Socket data corrupted: {payload}')
-                    if data:
-                        payload += data
-                    else:
-                        break
-                # Let the client know we are good
-                connection.sendall('ACK'.encode())
-            # Send command to interpreter
-            from lyipc.interpreter import parse_command
-            parse_command(payload)
+    KlayoutServer()
 
 
 if __name__ == '__main__':
