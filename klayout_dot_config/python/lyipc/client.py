@@ -1,14 +1,16 @@
+''' The client is designed to run in either python or klayout's interpreter
+'''
 from __future__ import print_function
 import socket
 from lyipc import PORT, isGSI
 
 
 if not isGSI():
-    print('Warning: pya will not be available')
+    # print('Warning: pya will not be available')
     try:
         import PyQt5.QtNetwork
     except ImportError as e:
-        print('No PyQt5 found. You have to run this script from klayout\'s interpreter')
+        print('Warning: No PyQt5 found. You have to run this script from klayout\'s interpreter')
 else:
     import pya
 
@@ -38,7 +40,7 @@ def send(message='ping 1234', port=PORT):
         psock = PyQt5.QtNetwork.QTcpSocket()
         ha = PyQt5.QtNetwork.QHostAddress.LocalHost
         payload = payload.encode()
-        
+
     psock.connectToHost(ha, port)
     if psock.waitForConnected():
         psock.write(payload)

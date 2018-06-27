@@ -1,12 +1,14 @@
-''' Used QTcpServer
+''' Server is designed to run from klayout GSI, usually in GUI mode
+
     Current state: only way to stop serving is close the application
 '''
 import socket
 import lyipc
-from lyipc import PORT, quickmsg, isGSI, isGUI
+from lyipc import PORT, quickmsg, isGSI
 
 if not isGSI():
     raise RuntimeError('Non-klayout serving does not make sense')
+
 import pya
 
 
@@ -16,16 +18,9 @@ class KlayoutServer(pya.QTcpServer):
             # Handle incoming connection
             connection = self.nextPendingConnection()
             message = 'null'
-            # import pdb; pdb.set_trace()
             while connection.isOpen() and connection.state() == pya.QTcpSocket.ConnectedState:
-                # if connection.waitForReadyRead():
                 if connection.canReadLine():
                     payload = connection.readLine()
-                    # quickmsg('Got a ' + str(type(payload)))
-                    # try:
-                    #     line = bytes(payload).decode('utf-8')
-                    # except:
-                    #     pass
                     message = payload.rstrip('\n').rstrip('\r')
                     connection.write('ACK')
                 else:

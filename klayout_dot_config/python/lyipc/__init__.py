@@ -2,6 +2,9 @@
 PORT = 11078
 
 def isGSI():
+    ''' Detect whether we are in klayout's generic scripting interface
+        Since pya cannot be imported from outside, try that.
+    '''
     try:
         import pya
         return True
@@ -9,14 +12,15 @@ def isGSI():
         return False
 
 def isGUI():
-    import pya
-    if isGSI() and pya.Application.instance().main_window() is not None:
-        return True
-    else:
-        return False
+    ''' Klayout can run as a window or in batch mode on command line
+    '''
+    if isGSI():
+        import pya
+        if pya.Application.instance().main_window() is not None:
+            return True
+    return False
 
 
-# This package should be compatible with GUI/batch klayout/python clients/servers. Reporting is different for each
 def quickmsg(msg):
     if isGUI():
         import pya

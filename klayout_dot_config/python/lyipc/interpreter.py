@@ -1,5 +1,5 @@
 # The simplest interpreter you can imagine
-from lyipc import quickmsg, isGUI, isGSI
+from lyipc import quickmsg, isGSI
 import lyipc.server
 import os
 
