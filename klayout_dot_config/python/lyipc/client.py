@@ -25,12 +25,13 @@ def kill():
 
 def send(message='ping 1234', port=PORT):
     ''' Sends a raw message '''
+    payload = message + '\r\n'
     psock = QTcpSocket()
     ha = 'localhost'
     # import pdb; pdb.set_trace()
     psock.connectToHost(ha, port)
     if psock.waitForConnected():
-        psock.write((message + '\r\n'))#.encode())
+        psock.write(payload)#.encode())
         if not psock.waitForReadyRead(3000) or not psock.readLine().startswith('ACK'):
             raise Exception('Not acknowledged')
     else:

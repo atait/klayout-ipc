@@ -15,16 +15,17 @@ class KlayoutServer(pya.QTcpServer):
         try:
             # Handle incoming connection
             connection = self.nextPendingConnection()
-            payload = ''
+            message = 'null'
             while connection.isOpen() and connection.state() == pya.QTcpSocket.ConnectedState:
                 # connection.waitForReadyRead(1000)
                 if connection.canReadLine():
-                    line = connection.readLine()
+                    payload = connection.readLine()
+                    # quickmsg('Got a ' + str(type(line)))
                     # try:
                     #     line = bytes(line).decode('utf-8')
                     # except:
                     #     pass
-                    payload = line.rstrip('\n').rstrip('\r')
+                    message = payload.rstrip('\n').rstrip('\r')
                     connection.write('ACK')
                 else:
                     connection.waitForReadyRead(500)
@@ -37,7 +38,7 @@ class KlayoutServer(pya.QTcpServer):
 
             # Do something with what was received
             from lyipc.interpreter import parse_command
-            parse_command(payload)
+            parse_command(message)
 
         except Exception as ex: 
           quickmsg("ERROR " + str(ex))
