@@ -64,8 +64,7 @@ def start_serving(port=PORT):
     #     quickmsg('Server already running')
     #     stop_serving()
     # server_running = True
-    pass
-    # KlayoutServer()
+    server = KlayoutServer()
 
 
 # if __name__ == '__main__':

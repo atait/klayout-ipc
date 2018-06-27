@@ -6,7 +6,7 @@
  <epilog/>
  <autorun>false</autorun>
  <autorun-early>false</autorun-early>
- <shortcut>Ctrl+9</shortcut>
+ <shortcut>Ctrl+I</shortcut>
  <show-in-menu>true</show-in-menu>
  <menu-path>@toolbar.ipc_button.end</menu-path>
  <interpreter>python</interpreter>

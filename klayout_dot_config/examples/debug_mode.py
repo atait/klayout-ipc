@@ -8,21 +8,6 @@ from lyipc.client import remotewrite, remoteload, send
 import time
 import os
 
-# import pya
-# psock = pya.QTcpSocket()
-# psock.connectToHost('localhost', 11078)
-# if psock.waitForConnected():
-#     print('Connection made')
-#     psock.write('ping' + '\r\n')
-#     psock.waitForReadyRead(3000)
-#     psock.readAll()
-# #     if psock.readBytes() == 0 or ret != 'ACK':
-# #         raise Exception('Not acknowledged')
-# else:
-#     print('Connection Fail!')
-
-# import pdb; pdb.set_trace()
-
 # gdsname = os.path.realpath('box.gds')
 # layout = pya.Layout()
 # layout.dbu = 0.001

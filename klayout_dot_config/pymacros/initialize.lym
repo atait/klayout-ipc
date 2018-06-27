@@ -15,9 +15,9 @@
 '''
 
 from os.path import dirname, realpath, join as pjoin
-import sys
-import lyipc
-from lyipc.server import start_serving
+
+def dummy():
+    pya.MessageBox.info('lyipc', 'This button doesnt do anything', pya.MessageBox.Ok)
 
 # Add a button to the toolbar that runs the server
 menu = pya.Application.instance().main_window().menu()
@@ -25,7 +25,7 @@ if not(menu.is_menu("@toolbar.ipc_button")):
     ipc_button_impl = pya.Action()
     menu.insert_item("@toolbar.end", "ipc_button", ipc_button_impl)
 ipc_button_impl.title = "Inter-process\nCommunication"
-ipc_button_impl.on_triggered(start_serving)
+ipc_button_impl.on_triggered(dummy)
 ipc_button_impl.icon = pjoin(dirname(realpath(__file__)), "../icons", "lyipc.png")
 
 pya.Application.instance().main_window().message('lyipc initialized',4000)
