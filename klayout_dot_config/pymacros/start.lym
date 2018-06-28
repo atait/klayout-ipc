@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <klayout-macro>
- <description>Start IPC server</description>
+ <description>Inter-process communication server</description>
  <category>pymacros</category>
  <prolog/>
  <epilog/>
@@ -17,8 +17,10 @@
 from lyipc.server import KlayoutServer
 answer = pya.MessageBox.question('lyipc', 
     'You are starting a server where clients can control the main window.\n'
-    'Any open views/layouts could be closed or overwritten.\n'
-    '(If you want to keep this application going, try launching another klayout instance from the command line.)\n'
+    'Any open views/layouts could be closed or overwritten.\n\n'
+    'If you want to keep this application going, '
+    'try launching another klayout instance from the command line. '
+    'Then start the IPC server over there.\n'
     '\nContinue?\n',
     pya.MessageBox.Cancel + pya.MessageBox.Ok)
 

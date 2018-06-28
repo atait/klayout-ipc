@@ -3,7 +3,7 @@
  <name>klayout_ipc</name>
  <version>0.0.1</version>
  <title>Klayout IPC</title>
- <doc>Socket communication between instances of klayout</doc>
+ <doc>Socket communication between klayout and external processes</doc>
  <doc-url>doc/README.html</doc-url>
  <url/>
  <license>MIT</license>

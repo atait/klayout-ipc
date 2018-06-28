@@ -7,27 +7,14 @@
  <autorun>true</autorun>
  <autorun-early>false</autorun-early>
  <shortcut/>
- <show-in-menu>true</show-in-menu>
- <menu-path>help_menu.end</menu-path>
+ <show-in-menu>false</show-in-menu>
+ <menu-path/>
  <interpreter>python</interpreter>
  <dsl-interpreter-name/>
  <text>''' Inter-process communication initialization
 '''
-
-from os.path import dirname, realpath, join as pjoin
-
-def dummy():
-    pya.MessageBox.info('lyipc', 'This button doesnt do anything', pya.MessageBox.Ok)
-
-# Add a button to the toolbar that runs the server
-menu = pya.Application.instance().main_window().menu()
-if not(menu.is_menu("@toolbar.ipc_button")):
-    ipc_button_impl = pya.Action()
-    menu.insert_item("@toolbar.end", "ipc_button", ipc_button_impl)
-ipc_button_impl.title = "Inter-process\nCommunication"
-ipc_button_impl.on_triggered(dummy)
-ipc_button_impl.icon = pjoin(dirname(realpath(__file__)), "../icons", "lyipc.png")
-
+# Nothing to do here
+# Auto-launching the server is a bad idea
 pya.Application.instance().main_window().message('lyipc initialized',1000)
 
  </text>
