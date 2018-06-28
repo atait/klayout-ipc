@@ -1055,52 +1055,63 @@ body .markdown-body
 .codehilite .vi{color:teal}
 .codehilite .il{color:#009999}
 .codehilite .gc{color:#999;background-color:#EAF2F5}
-</style><title>README</title></head><body><article class="markdown-body"><h1 id="interprocess-communication-for-klayout">Interprocess communication for klayout<a class="headerlink" href="#interprocess-communication-for-klayout" title="Permanent link"></a></h1>
+</style><title>README</title></head><body><article class="markdown-body"><h1 id="inter-process-communication-for-klayout-lyipc">Inter-process communication for klayout (lyipc)<a class="headerlink" href="#inter-process-communication-for-klayout-lyipc" title="Permanent link"></a></h1>
 <h2 id="there-are-two-main-pieces-of-code">There are two main pieces of code<a class="headerlink" href="#there-are-two-main-pieces-of-code" title="Permanent link"></a></h2>
 <ol>
-<li>A server that is launched from within the klayout.app GUI</li>
-<li>A client API for &ldquo;remotewrite&rdquo; that is imported from pya by an external program<ul>
-<li>The external program does not explicitly worry about sockets</li>
-</ul>
-</li>
+<li>A server that is launched from within a klayout.app GUI</li>
+<li>A client API that lets an external program control that klayout.app GUI</li>
 </ol>
-<h2 id="goal-a-process-flow-like-this">Goal: a process flow like this<a class="headerlink" href="#goal-a-process-flow-like-this" title="Permanent link"></a></h2>
+<h2 id="initial-goal-a-debug-process-flow-like-this">Initial goal: a debug process flow like this<a class="headerlink" href="#initial-goal-a-debug-process-flow-like-this" title="Permanent link"></a></h2>
 <ol>
 <li>[process #1] Launch klayout.app<ul>
-<li>Open a shared file (&ldquo;x.gds&rdquo;)</li>
 <li>From menu item, start a simple server on port <XXY></li>
 </ul>
 </li>
-<li>[process #2] Run a interpreted python program with, e.g. <code>klayout -b -r myscript.py</code><ul>
+<li>[process #2] Run a python program in <em>either</em> klayout or python<ul>
+<li>Import <code>lyipc</code> client package</li>
 <li>Stop this program in a debugger like PDB or Spyder</li>
-<li>Call <code>pya.remotewrite("x.gds")</code></li>
+<li>Write to a file &ldquo;x.gds&rdquo;</li>
+<li>Call <code>ipc.load("x.gds")</code></li>
 </ul>
 </li>
-<li>[process #2] Inside remotewrite, pya will<ul>
-<li>Write to file using builtin <code>Layout.write("x.gds")</code></li>
+<li>[process #2] The ipc.client module will<ul>
 <li>Initiate a socket connection on port <XXY></li>
+<li>Send a command that means load</li>
 </ul>
 </li>
 <li>[process #1] Upon receiving a connection request<ul>
-<li>The main view is refreshed</li>
+<li>Received command is parsed</li>
+<li>An action is taken. In this case, load that file into the current view</li>
 </ul>
 </li>
-<li>[process #2] closes the socket</li>
+<li>[process #2] closes the socket and continues execution</li>
 </ol>
-<h2 id="released-version-incompatibility">Released version incompatibility<a class="headerlink" href="#released-version-incompatibility" title="Permanent link"></a></h2>
-<p>In my application built from source, I have fully disabled <code>&amp;m_file_changed_timer</code> to prevent the &ldquo;do you want to reload?&rdquo; prompt. In a later version, this could be controlled by a preference item.</p>
+<h3 id="other-use-cases">Other use cases<a class="headerlink" href="#other-use-cases" title="Permanent link"></a></h3>
+<p>This could potentially be modified to allow the server to execute arbitrary commands. Essentially, a klayout app could be fully controlled by another klayout app or external process on a local or remote machine. For example, klayout on my laptop could send a big chip to klayout on a cluster to draw the thing, run a tough DRC, and rsync the results back.</p>
+<p>Any other ideas?</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link"></a></h2>
 <ol>
 <li>From source<ul>
 <li>git clone &hellip;</li>
-<li>ln -s ~/&hellip;/klayout-ipc/klayout_dot_config ~/.klayout/salt/klayout_ipc</li>
+<li>ln -s ~/&hellip;/klayout-ipc/klayout_dot_config ~/.klayout/salt/klayout_ipc
+or</li>
+<li>export KLAYOUT_PATH=&rdquo;~/&hellip;/klayout-ipc/klayout_dot_config&rdquo;</li>
 </ul>
 </li>
-<li>From package manager (TODO)</li>
+<li>From package manager <ul>
+<li>(TODO)</li>
+</ul>
+</li>
 </ol>
-<h2 id="questions">Questions<a class="headerlink" href="#questions" title="Permanent link"></a></h2>
-<p>Can the server be non-blocking? I would like to be able to zoom around. Will it allow us to put that server in a thread from QApplication?</p>
-<p>What about sending a real payload? Useful?</p>
-<p>The server can communicate back to the client. Is there any use for this?</p>
-<p>Can the client be phidl?</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
+<p>Server side: press Ctrl+I</p>
+<p>Client side: 
+<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">lyipc.client</span> <span class="kn">as</span> <span class="nn">ipc</span>
+<span class="n">ipc</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;mylayout.gds&#39;</span><span class="p">)</span>
+</pre></div></p>
+<h2 id="released-version-incompatibility">Released version incompatibility<a class="headerlink" href="#released-version-incompatibility" title="Permanent link"></a></h2>
+<p>In my application, I have fully disabled <code>&amp;m_file_changed_timer</code> to prevent the &ldquo;do you want to reload?&rdquo; prompt. In a later version of klayout, this could be controlled in a preference pane. The prompt does not limit functionality; just tolerate it, or, if you can compile from source, comment these lines in <code>layMainWindow.cpp</code>
+<div class="codehilite"><pre><span class="mi">683</span> <span class="c1">// connect (&amp;m_file_changed_timer, SIGNAL (timeout ()), this, SLOT (file_changed_timer()));</span>
+<span class="mi">684</span> <span class="c1">// m_file_changed_timer.setSingleShot (true);</span>
+</pre></div></p>
 <h2 id="author-alex-tait-june-2018">Author: Alex Tait, June 2018<a class="headerlink" href="#author-alex-tait-june-2018" title="Permanent link"></a></h2></article></body></html>
