@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <klayout-macro>
- <description>IPC start server</description>
+ <description>Start IPC server</description>
  <category>pymacros</category>
  <prolog/>
  <epilog/>
@@ -8,13 +8,22 @@
  <autorun-early>false</autorun-early>
  <shortcut>Ctrl+I</shortcut>
  <show-in-menu>true</show-in-menu>
- <menu-path>@toolbar.ipc_button.end</menu-path>
+ <menu-path>tools_menu.end</menu-path>
  <interpreter>python</interpreter>
  <dsl-interpreter-name/>
- <text>''' Inter-process communication start
+ <text>''' Launch IPC server
 '''
+
 from lyipc.server import KlayoutServer
-server = KlayoutServer()  # The assignment is absolutely essential
+answer = pya.MessageBox.question('lyipc', 
+    'You are starting a server where clients can control the main window.\n'
+    'Any open views/layouts could be closed or overwritten.\n'
+    '(If you want to keep this application going, try launching another klayout instance from the command line.)\n'
+    '\nContinue?\n',
+    pya.MessageBox.Cancel + pya.MessageBox.Ok)
+
+if answer is pya.MessageBox.Ok:
+    server = KlayoutServer()  # The assignment is essential to work, not sure why
 
  </text>
 </klayout-macro>
