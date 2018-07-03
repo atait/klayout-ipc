@@ -1,6 +1,6 @@
 ''' Server is designed to run from klayout GSI, usually in GUI mode
 
-    Current state: only way to stop serving is close the application
+    Current state: only way to stop serving is close the application.
 '''
 import socket
 import lyipc
@@ -36,7 +36,7 @@ class KlayoutServer(pya.QTcpServer):
             from lyipc.interpreter import parse_command
             parse_command(message)
 
-        except Exception as ex: 
+        except Exception as ex:
           quickmsg("ERROR " + str(ex))
           raise
 
@@ -46,24 +46,6 @@ class KlayoutServer(pya.QTcpServer):
         self.listen(ha, port)
         self.newConnection(self.new_connection)
         quickmsg(f'Server initialized with {ha}, {port}')
-
-
-
-def stop_serving():
-    global server_running
-    server_running = False
-
-
-def start_serving(port=PORT):
-    ''' 
-    '''
-    # Check for existing one
-    # global server_running
-    # if server_running:
-    #     quickmsg('Server already running')
-    #     stop_serving()
-    # server_running = True
-    server = KlayoutServer()
 
 
 # if __name__ == '__main__':

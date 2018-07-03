@@ -3,6 +3,8 @@
 from __future__ import print_function
 import socket
 from lyipc import PORT, isGSI
+import os
+from functools import lru_cache
 
 
 if not isGSI():
@@ -19,7 +21,9 @@ def reload():
     send('reload view')
 
 
+fast_realpath = lru_cache(maxsize=4)(os.path.realpath)  # Since the argument is going to be the same every time
 def load(filename):
+    filename = fast_realpath(filename)
     send(f'load {filename}')
 
 
