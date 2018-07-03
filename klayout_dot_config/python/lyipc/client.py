@@ -75,6 +75,7 @@ def trace_pyainsert(layout, file, write_load_delay=0.01):
         This is because usually cells are generated before they are inserted into the layout,
         yet we would still like to be able to visualize their creation.
     '''
+    import pya
     pya.Shapes.old_insert = pya.Shapes.insert
     def new_insert(self, *args, **kwargs):
         retval = pya.Shapes.old_insert(self, *args, **kwargs)
@@ -83,3 +84,17 @@ def trace_pyainsert(layout, file, write_load_delay=0.01):
         load(file)
         return retval
     pya.Shapes.insert = new_insert
+
+
+def trace_phidladd(device, file, write_load_delay=0.01):
+    ''' Writes to file and loads in the remote instance whenever phidl.Device.add is called
+    '''
+    import phidl
+    phidl.device_layout.Device.old_add = phidl.device_layout.Device.add
+    def new_add(self, *args, **kwargs):
+        retval = phidl.device_layout.Device.old_add(self, *args, **kwargs)
+        device.write_gds(file)
+        time.sleep(write_load_delay)
+        load(file)
+        return retval
+    phidl.device_layout.Device.add = new_add

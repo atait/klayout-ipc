@@ -1,7 +1,6 @@
 ''' Automatically launches a subprocess klayout and drops into debug shell
 '''
 
-import lyipc.client as ipc
 import os
 import time
 import numpy as np
@@ -9,8 +8,7 @@ from functools import partial
 
 import pya
 import sys
-pwd = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(pwd)
+import lyipc.client as ipc
 
 debug_file = os.path.realpath('debuglobal.gds')
 
