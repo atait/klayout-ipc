@@ -14,14 +14,15 @@ sys.path.append(pwd)
 
 debug_file = os.path.realpath('debuglobal.gds')
 
-layout = pya.Layout()
-dbu = layout.dbu = 0.001
-TOP = layout.create_cell('TOP')
-l1 = layout.insert_layer(pya.LayerInfo(1, 0))
-l2 = layout.insert_layer(pya.LayerInfo(2, 0))
 
+def intercept_pyainsert(layout, write_load_delay=0.01):
+    ''' Writes to file and loads in the remote instance.
+        "layout" is what will be written to file and loaded there.
 
-def intercept_pyainsert(write_load_delay=0.01):
+        Intercepts pya.Shapes.insert globally, not just for the argument "layout".
+        This is because usually cells are generated before they are inserted into the layout,
+        yet we would still like to be able to visualize their creation.
+    '''
     pya.Shapes.old_insert = pya.Shapes.insert
     def new_insert(self, *args, **kwargs):
         retval = pya.Shapes.old_insert(self, *args, **kwargs)
@@ -33,7 +34,12 @@ def intercept_pyainsert(write_load_delay=0.01):
 
 
 def simple_create():
-    intercept_pyainsert(0.02)
+    layout = pya.Layout()
+    intercept_pyainsert(layout, 0.02)
+    layout.dbu = 0.001
+    TOP = layout.create_cell('TOP')
+    l1 = layout.insert_layer(pya.LayerInfo(1, 0))
+    l2 = layout.insert_layer(pya.LayerInfo(2, 0))
 
     for i in range(21):
         for j in range(21):
@@ -44,7 +50,12 @@ def simple_create():
 
 
 def tough_create():
-    intercept_pyainsert(1e-4)
+    layout = pya.Layout()
+    intercept_pyainsert(layout, 1e-4)
+    layout.dbu = 0.001
+    TOP = layout.create_cell('TOP')
+    l1 = layout.insert_layer(pya.LayerInfo(1, 0))
+    l2 = layout.insert_layer(pya.LayerInfo(2, 0))
 
     for i in range(51):
         for j in range(51):
@@ -54,4 +65,4 @@ def tough_create():
     TOP.shapes(l2).insert(pya.DBox(0,0,1000,1000))
 
 
-tough_create()
+simple_create()
