@@ -8,8 +8,9 @@ if isGSI():
 
 
 def hard_load_layout(filename):
-    ''' Swallow the error if the file is not completely written yet.
-        This doesn't seem to adversely affect the program
+    ''' Swallow the error if the file is not completely written yet,
+        or if the last file was not completely rendered.
+        This doesn't seem to fatally affect the program
     '''
     main = pya.Application.instance().main_window()
     try:
