@@ -17,7 +17,7 @@ except ImportError:
     sys.path.append(join(dirname(__file__), '..', 'python'))
 
 import phidl
-import lyipc.client.phidl as ipc
+import lyipc.client as ipc
 import os
 import time
 

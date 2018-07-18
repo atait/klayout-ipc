@@ -8,6 +8,7 @@ from __future__ import print_function
 from lyipc import isGSI, PORT
 
 
+# Determine which socket class to use
 if not isGSI():
     # print('Warning: pya will not be available')
     import PyQt5.QtNetwork
@@ -58,3 +59,4 @@ def handle_query(retString):
 
 
 from .general import *
+from .dependent import *

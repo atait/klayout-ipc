@@ -8,9 +8,7 @@ import pya
 import time
 import os
 
-import lyipc.client.general as general
-general.write_methods = {pya.Cell: 'write', pya.Layout: 'write'}
-from .general import load, reload, kill, diff, klayout_quickplot, generate_display_function
+from .dependent import klayout_quickplot
 
 
 def trace_pyainsert(layout, file, write_load_delay=0.01):

@@ -8,9 +8,7 @@ import phidl
 import time
 import os
 
-import lyipc.client.general as general
-general.write_methods.update(phidl.Device='write_gds')
-from .general import load, reload, kill, diff, klayout_quickplot, generate_display_function
+from .dependent import klayout_quickplot
 
 
 def trace_phidladd(device, file, write_load_delay=0.01):
