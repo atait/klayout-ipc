@@ -1,21 +1,25 @@
-''' First start an application instance. Run the lyIPC.
+''' Debugging with klayout's pya program
+
+    First start an application instance. Run the lyIPC.
 
     Then run this from command line with "klayout -b -r for_pya.py"
 '''
 import pya
 # import klayout.db as pya
 import lyipc.client.pya as ipc
-import time
 import os
-
-
-gdsname = os.path.realpath('box.gds')
+import time
 
 # Define layouts, layers, cell
 layout = pya.Layout()
 layout.dbu = 0.001
 TOP = layout.create_cell('TOP')
 l1 = layout.insert_layer(pya.LayerInfo(1, 0))
+
+
+### Basic lyipc usage ###
+
+gdsname = os.path.realpath('box.gds')
 
 # Create and place a rectangle
 box = pya.DBox(pya.DPoint(0, 0), pya.DPoint(20, 20))
@@ -26,16 +30,22 @@ layout.write(gdsname)
 ipc.load(gdsname)
 
 
-# Changing the flow in a debugger and animation, sort of
-for i in range(11):
-    box2 = pya.DBox(pya.DPoint(2 * i, 2 * i), pya.DPoint(40, 40))
+### The debug workflow ###
 
-    if i == 7:
+origin = pya.DPoint(0, 0)
+turn = 0
+for i in range(19):
+    if i == 5:
         import pdb; pdb.set_trace()
         # Path 1: let the debugger continue
-        # Path 2: execute the following line in debugger, then continue
-        # box2 = box2.move(40, 0)
+        # Path 2: execute "turn = 20" in debugger, then continue
+
+    width = 40 - 2 * i
+    box2 = pya.DBox(0, 0, width, width)
+    box2 = box2.move(pya.DVector(origin))
     TOP.shapes(l1).insert(box2)
+    origin = box2.p2 + pya.DVector(-turn, 0)
+
     layout.write(gdsname)
-    ipc.reload()
+    ipc.load(gdsname)
     time.sleep(0.1)
