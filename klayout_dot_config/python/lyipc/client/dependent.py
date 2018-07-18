@@ -6,6 +6,8 @@ from functools import wraps
 from .general import load, reload
 
 
+global __unbound_method_names
+__unbound_method_names = dict()  # this is a cache to avoid lots of importing
 def _get_write_method(writable_obj):
     ''' This function resolves write methods for cell/layout objects across languages.
 
@@ -18,22 +20,27 @@ def _get_write_method(writable_obj):
         Returns:
             (func): bound method corresponding to a method that produces a file output (often GDS)
     '''
-    try:
-        # phidl and others are based on gdspy, so this covers them
-        import gdspy
-        if isinstance(writable_obj, gdspy.Cell):
-            return getattr(writable_obj, 'write_gds')
-    except ImportError:
-        pass
+    global __unbound_method_names
 
-    try:
-        import pya
-        if isinstance(writable_obj, (pya.Cell, pya.Layout)):
-            return getattr(writable_obj, 'write')
-    except ImportError:
-        pass
+    if type(writable_obj) not in __unbound_method_names.keys():
+        # It has not been added to the cache yet. Search for the method in the library.
+        try:
+            import gdspy  # phidl and others are based on gdspy, so this covers them
+            if isinstance(writable_obj, gdspy.Cell):
+                __unbound_method_names[type(writable_obj)] = 'write_gds'
+        except ImportError:
+            pass
 
-    raise RuntimeError('No write methods specified for {}.'.format(type(writable_obj).__name__))
+        try:
+            import pya
+            if isinstance(writable_obj, (pya.Cell, pya.Layout)):
+                __unbound_method_names[type(writable_obj)] = 'write'
+        except ImportError:
+            pass
+
+    found_meth_name = __unbound_method_names[type(writable_obj)]
+    return getattr(writable_obj, found_meth_name)
+
 
 
 def klayout_quickplot(writable_obj, file, fresh=False, write_load_delay=0.01, write_kwargs=None):

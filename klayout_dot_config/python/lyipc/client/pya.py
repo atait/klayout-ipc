@@ -19,6 +19,7 @@ def trace_pyainsert(layout, file, write_load_delay=0.01):
         This is because usually cells are generated before they are inserted into the layout,
         yet we would still like to be able to visualize their creation.
     '''
+    klayout_quickplot(writable_obj, file, fresh=False, write_load_delay=0.01, write_kwargs=None)
     pya.Shapes.old_insert = pya.Shapes.insert
     def new_insert(self, *args, **kwargs):
         retval = pya.Shapes.old_insert(self, *args, **kwargs)
