@@ -7,12 +7,19 @@ import time
 import os
 from functools import wraps
 
+write_methods = {pya.Cell: 'write', pya.Layout: 'write'}
 
-def klayout_quickplot(cell_or_layout, file, fresh=False, write_load_delay=0.01):
+def klayout_quickplot(writable_obj, file, fresh=False, write_load_delay=0.01):
     ''' Does the write, wait, and load all in one.
         The fresh argument determines whether to load (True) or reload (False)
     '''
-    cell_or_layout.write(file)
+    for base_class in type(writable_obj).mro():
+        if base_class in write_methods.keys():
+            write = write_methods[base_class]
+            break
+    else:
+        raise KeyError('write_methods not delared for this class')
+    getattr(writable_obj, write)(file)
     time.sleep(write_load_delay)
     if fresh:
         load(file)
@@ -20,19 +27,19 @@ def klayout_quickplot(cell_or_layout, file, fresh=False, write_load_delay=0.01):
         reload()
 
 
-def generate_display_function(default_cell_or_layout, default_file):
+def generate_display_function(default_writable_obj, default_file):
     ''' A quick way to configure quickplotter into a brief command
 
         Usage::
             TOP = Layout()
-            kqp = make_display_function('debugging.gds', TOP)
+            kqp = make_display_function(TOP, 'debugging.gds')
             ...
             kqp()
     '''
     default_file = os.path.realpath(default_file)
     @wraps(klayout_quickplot)
-    def k_quick(cell_or_layout=default_cell_or_layout, file=default_file, **kwargs):
-        klayout_quickplot(cell_or_layout, file, **kwargs)
+    def k_quick(writable_obj=default_writable_obj, file=default_file, **kwargs):
+        klayout_quickplot(writable_obj, file, **kwargs)
     return k_quick
 
 

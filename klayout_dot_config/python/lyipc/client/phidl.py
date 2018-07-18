@@ -25,7 +25,7 @@ def generate_display_function(default_device, default_file):
 
         Usage::
             TOP = Device()
-            kqp = make_display_function('debugging.gds', TOP)
+            kqp = make_display_function(TOP, 'debugging.gds')
             ...
             kqp()
     '''
