@@ -1,6 +1,5 @@
 ''' These are functions specific to pya
-
-    By importing this module, the client.general module learns how to write pya.Cell and pya.Layout
+    There is not necessarily any similarity with implementation in other languages
 '''
 from __future__ import print_function
 import pya
@@ -8,7 +7,9 @@ import pya
 import time
 import os
 
-from .dependent import klayout_quickplot
+# Makes it so that only one import is needed: lyipc.client.phidl will drop in for lyipc.client
+from .general import *
+from .dependent import *
 
 
 def trace_pyainsert(layout, file, write_load_delay=0.01):
@@ -19,13 +20,10 @@ def trace_pyainsert(layout, file, write_load_delay=0.01):
         This is because usually cells are generated before they are inserted into the layout,
         yet we would still like to be able to visualize their creation.
     '''
-    klayout_quickplot(writable_obj, file, fresh=False, write_load_delay=0.01, write_kwargs=None)
     pya.Shapes.old_insert = pya.Shapes.insert
     def new_insert(self, *args, **kwargs):
         retval = pya.Shapes.old_insert(self, *args, **kwargs)
-        layout.write(file)
-        time.sleep(write_load_delay)
-        load(file)
+        klayout_quickplot(device, file, fresh=False)
         return retval
     pya.Shapes.insert = new_insert
 

@@ -1,4 +1,6 @@
-''' These depend on the language being used. It attempts to figure it out in order to provide the same API to any language '''
+''' These depend on the language being used but have very similar implementation across languages.
+    For example, every one has some way to write layout objects to a gds file.
+'''
 from __future__ import print_function
 import os
 import time

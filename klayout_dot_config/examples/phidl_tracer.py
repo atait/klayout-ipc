@@ -1,19 +1,32 @@
-''' Automatically launches a subprocess klayout and drops into debug shell
+''' Demonstrates a tracer program that reloads layout after every call to phidl.Device.add_ref (i.e. <<)
+
+    This runs fine in klayout's GSI interpreter too
 '''
-from os.path import join, dirname
-import sys
+try:
+    import lyipc
+except ImportError:
+    print('Warning: lyipc is not installed on your PYTHONPATH. Use')
+    print('pip install ~/.klayout/salt/klayout-ipc/klayout_dot_config/python/')
+    print('to install. Continuing with relative path for now...\n' + '-' * 50)
+    import sys
+    from os.path import join, dirname
+    sys.path.append(join(dirname(__file__), '..', 'python'))
+
 
 import lyipc.client.phidl as ipc
+# from lyipc.client.phidl import trace_phidladd
 import os
 import time
 import phidl
 
 
 debug_file = os.path.realpath('debuglobal.gds')
+ipc.load(debug_file)
 
 def simple_create():
     D = phidl.Device()
-    ipc.trace_phidladd(D, debug_file, 0.02)
+    ipc.trace_phidladd(D, 'debuglobal.gds')
+
     l1 = phidl.Layer(1)
     for i in range(4):
         for j in range(4):
