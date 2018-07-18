@@ -32,6 +32,8 @@ ipc.load(gdsname)
 
 ### The debug workflow ###
 
+kqp = ipc.generate_display_function(TOP, 'box.gds')
+
 origin = pya.DPoint(0, 0)
 turn = 0
 for i in range(19):
@@ -46,6 +48,4 @@ for i in range(19):
     TOP.shapes(l1).insert(box2)
     origin = box2.p2 + pya.DVector(-turn, 0)
 
-    layout.write(gdsname)
-    ipc.load(gdsname)
-    time.sleep(0.1)
+    kqp(fresh=True)

@@ -4,6 +4,36 @@ import pya
 
 from .general import load, reload, kill, diff
 import time
+import os
+from functools import wraps
+
+
+def klayout_quickplot(cell_or_layout, file, fresh=False, write_load_delay=0.01):
+    ''' Does the write, wait, and load all in one.
+        The fresh argument determines whether to load (True) or reload (False)
+    '''
+    cell_or_layout.write(file)
+    time.sleep(write_load_delay)
+    if fresh:
+        load(file)
+    else:
+        reload()
+
+
+def generate_display_function(default_cell_or_layout, default_file):
+    ''' A quick way to configure quickplotter into a brief command
+
+        Usage::
+            TOP = Layout()
+            kqp = make_display_function('debugging.gds', TOP)
+            ...
+            kqp()
+    '''
+    default_file = os.path.realpath(default_file)
+    @wraps(klayout_quickplot)
+    def k_quick(cell_or_layout=default_cell_or_layout, file=default_file, **kwargs):
+        klayout_quickplot(cell_or_layout, file, **kwargs)
+    return k_quick
 
 
 def trace_pyainsert(layout, file, write_load_delay=0.01):

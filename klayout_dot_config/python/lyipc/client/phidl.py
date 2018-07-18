@@ -11,9 +11,6 @@ from functools import wraps
 def klayout_quickplot(device, file, fresh=False, write_load_delay=0.01):
     ''' Does the write, wait, and load all in one.
         The fresh argument determines whether to load (True) or reload (False)
-
-        TODO:
-            Make compatible with pya
     '''
     device.write_gds(file)
     time.sleep(write_load_delay)
