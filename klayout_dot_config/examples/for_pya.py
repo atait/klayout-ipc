@@ -4,7 +4,7 @@
 '''
 import pya
 # import klayout.db as pya
-import lyipc.client as ipc
+import lyipc.client.pya as ipc
 import time
 import os
 

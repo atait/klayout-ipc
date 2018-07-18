@@ -3,7 +3,7 @@
 from os.path import join, dirname
 import sys
 
-import lyipc.client as ipc
+import lyipc.client.phidl as ipc
 import os
 import time
 import phidl
@@ -20,22 +20,6 @@ def simple_create():
             box = phidl.geometry.rectangle(size=(10, 10), layer=l1)
             box.move((15 * i, 15 * j))
             D << box
-
-
-# def tough_create():
-#     layout = pya.Layout()
-#     ipc.trace_pyainsert(layout, debug_file, 1e-4)
-#     layout.dbu = 0.001
-#     TOP = layout.create_cell('TOP')
-#     l1 = layout.insert_layer(pya.LayerInfo(1, 0))
-#     l2 = layout.insert_layer(pya.LayerInfo(2, 0))
-
-#     for i in range(51):
-#         for j in range(51):
-#             box = pya.DBox(0, 0, 10, 10)
-#             box.move(15 * i, 15 * j)
-#             TOP.shapes(l1).insert(box)
-#     TOP.shapes(l2).insert(pya.DBox(0,0,1000,1000))
 
 
 simple_create()

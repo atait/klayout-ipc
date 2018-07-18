@@ -8,7 +8,7 @@ from functools import partial
 
 import pya
 import sys
-import lyipc.client as ipc
+import lyipc.client.pya as ipc
 
 debug_file = os.path.realpath('debuglobal.gds')
 

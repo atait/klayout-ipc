@@ -10,7 +10,7 @@ from os.path import join, dirname
 import sys
 sys.path.append(join(dirname(__file__), '..', 'python'))
 
-import lyipc.client as ipc
+import lyipc.client.phidl as ipc
 import os
 import time
 import phidl

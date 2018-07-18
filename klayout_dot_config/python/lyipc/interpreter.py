@@ -10,8 +10,9 @@ import lyipc.server
 import os
 import traceback
 
-if isGSI():
-    import pya
+if not isGSI():
+    raise RuntimeError('Non-klayout serving does not make sense')
+import pya
 
 
 def hard_load_layout(filename):
