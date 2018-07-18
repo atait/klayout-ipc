@@ -1,4 +1,3 @@
-# import pya
 PORT = 11078
 
 def isGSI():

@@ -1,8 +1,9 @@
 ''' First start an application instance. Run the lyIPC.
 
-    Then run this from command line with "klayout -b -r debug_mode.py"
+    Then run this from command line with "klayout -b -r for_pya.py"
 '''
 import pya
+# import klayout.db as pya
 import lyipc.client as ipc
 import time
 import os
@@ -28,7 +29,7 @@ ipc.load(gdsname)
 # Changing the flow in a debugger and animation, sort of
 for i in range(11):
     box2 = pya.DBox(pya.DPoint(2 * i, 2 * i), pya.DPoint(40, 40))
-    
+
     if i == 7:
         import pdb; pdb.set_trace()
         # Path 1: let the debugger continue

@@ -5,15 +5,12 @@ import socket
 from lyipc import PORT, isGSI
 import os
 import time
-from functools import lru_cache
+from functools import lru_cache, wraps
 
 
 if not isGSI():
     # print('Warning: pya will not be available')
-    try:
-        import PyQt5.QtNetwork
-    except ImportError as e:
-        print('Warning: No PyQt5 found. You have to run this script from klayout\'s interpreter')
+    import PyQt5.QtNetwork
 else:
     import pya
 
@@ -25,6 +22,7 @@ def reload():
 fast_realpath = lru_cache(maxsize=4)(os.path.realpath)  # Since the argument is going to be the same every time
 def load(filename):
     filename = fast_realpath(filename)
+    # TODO: use a temporary file
     send(f'load {filename}')
 
 
