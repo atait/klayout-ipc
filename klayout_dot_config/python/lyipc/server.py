@@ -8,8 +8,18 @@ from lyipc import PORT, quickmsg, isGSI
 
 if not isGSI():
     raise RuntimeError('Non-klayout serving does not make sense')
-
 import pya
+
+
+# As of now, port is hard coded and there is no way to stop it besided closing the app
+# We have to make sure that a second server doesn't come along and clash
+global __active_server
+__active_server = None
+def run_server():
+    global __active_server
+    if __active_server is None:
+        __active_server = KlayoutServer()
+    return __active_server
 
 
 class KlayoutServer(pya.QTcpServer):
@@ -38,8 +48,3 @@ class KlayoutServer(pya.QTcpServer):
         self.listen(ha, port)
         self.newConnection(self.new_connection)
         quickmsg(f'Server initialized with {ha}, {port}')
-
-
-# if __name__ == '__main__':
-#     start_serving()
-

@@ -14,8 +14,8 @@
  <text>''' Launch IPC server
 '''
 
-from lyipc.server import KlayoutServer
-answer = pya.MessageBox.question('lyipc', 
+from lyipc.server import run_server
+answer = pya.MessageBox.question('lyipc',
     'You are starting a server where clients can control the main window.\n'
     'Any open views/layouts could be closed or overwritten.\n\n'
     'If you want to keep this application going, '
@@ -25,7 +25,7 @@ answer = pya.MessageBox.question('lyipc',
     pya.MessageBox.Cancel + pya.MessageBox.Ok)
 
 if answer is pya.MessageBox.Ok:
-    server = KlayoutServer()  # The assignment is essential to work, not sure why
+    _ = run_server()  # The assignment is essential to work, not sure why
 
  </text>
 </klayout-macro>
