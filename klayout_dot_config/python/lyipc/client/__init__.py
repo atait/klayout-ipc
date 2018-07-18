@@ -16,7 +16,7 @@ if not isGSI():
 else:
     import pya
     from pya import QTcpSocket
-    localhost = pya.QHostAddress()
+    localhost = 'localhost'
 
 
 def send(message='ping 1234', port=PORT):
