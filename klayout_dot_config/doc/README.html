@@ -1055,26 +1055,28 @@ body .markdown-body
 .codehilite .vi{color:teal}
 .codehilite .il{color:#009999}
 .codehilite .gc{color:#999;background-color:#EAF2F5}
-</style><title>README</title></head><body><article class="markdown-body"><h1 id="inter-process-communication-for-klayout-lyipc">Inter-process communication for klayout (lyipc)<a class="headerlink" href="#inter-process-communication-for-klayout-lyipc" title="Permanent link"></a></h1>
-<h2 id="there-are-two-main-pieces-of-code">There are two main pieces of code<a class="headerlink" href="#there-are-two-main-pieces-of-code" title="Permanent link"></a></h2>
-<ol>
-<li>A server that is launched from within a klayout.app GUI</li>
-<li>A client API that lets an external program control that klayout.app GUI</li>
-</ol>
-<h2 id="initial-goal-a-debug-process-flow-like-this">Initial goal: a debug process flow like this<a class="headerlink" href="#initial-goal-a-debug-process-flow-like-this" title="Permanent link"></a></h2>
+</style><title>README</title></head><body><article class="markdown-body"><h1 id="inter-process-communication-for-klayout-lyipc">Inter-process communication for KLayout (lyipc)<a class="headerlink" href="#inter-process-communication-for-klayout-lyipc" title="Permanent link"></a></h1>
+<p><a href="https://www.klayout.de/index.php">KLayout</a> is a layout editor and viewer. It is arguably the highest-performing and most advanced layout viewer in the 10<sup>0</sup>€/$ –
+ 10<sup>4</sup>€/$ range. KLayout is free software. Among its editing functions is a generic scripting interface (GSI) that supports Python and Ruby, and there are other python scripting projects that specialize in various other ways (e.g. phidl, gdspy, nazca, MatlabGDSPhotonics, KiCad, etc.).</p>
+<p>Approaches for integrated circuit layout fall into two main categories: GUI-driven, interactive design aided by software macros; and script-driven, non-interactive programming. The latter is more repeatable, modifiable, and reusable once the script (and its library modules) has been written. The problem lies in developing the code – the layout object state and its evolution through time is realtively opaque to the programmer.</p>
+<p><strong>The main application of lyipc</strong> is a graphical debugging workflow that uses the excellent KLayout viewer but is not necessarily dependent on the klayout scripting language or IDE. The idea is to create a communication link between two processes:
+1. A server that is launched from within the klayout.app GUI
+2. A client that can control various aspects of that klayout.app GUI</p>
+<p>By separating the processes, the server GUI can be fully featured, initializing a large virtual program memory, while the client can be pretty lightweight.</p>
+<h3 id="detail-a-debug-process-flow-looks-like-this">Detail: a debug process flow looks like this<a class="headerlink" href="#detail-a-debug-process-flow-looks-like-this" title="Permanent link"></a></h3>
 <ol>
 <li>[process #1] Launch klayout.app<ul>
 <li>From menu item, start a simple server on port <XXY></li>
 </ul>
 </li>
-<li>[process #2] Run a python program in <em>either</em> klayout or python<ul>
+<li>[process #2: programmer] Run a python program in <em>either</em> klayout or python<ul>
 <li>Import <code>lyipc</code> client package</li>
-<li>Stop this program in a debugger like PDB or Spyder</li>
+<li>Stop this program in a debugger like PDB or Spyder (examine/change program variables)</li>
 <li>Write to a file &ldquo;x.gds&rdquo;</li>
 <li>Call <code>ipc.load("x.gds")</code></li>
 </ul>
 </li>
-<li>[process #2] The ipc.client module will<ul>
+<li>[process #2: lyipc] The lyipc.client module will<ul>
 <li>Initiate a socket connection on port <XXY></li>
 <li>Send a command that means load</li>
 </ul>
@@ -1084,34 +1086,60 @@ body .markdown-body
 <li>An action is taken. In this case, load that file into the current view</li>
 </ul>
 </li>
-<li>[process #2] closes the socket and continues execution</li>
+<li>[process #2: lyipc] closes the socket and continues execution</li>
 </ol>
-<h3 id="other-use-cases">Other use cases<a class="headerlink" href="#other-use-cases" title="Permanent link"></a></h3>
-<p>This could potentially be modified to allow the server to execute arbitrary commands. Essentially, a klayout app could be fully controlled by another klayout app or external process on a local or remote machine. For example, klayout on my laptop could send a big chip to klayout on a cluster to draw the thing, run a tough DRC, and rsync the results back.</p>
-<p>Any other ideas?</p>
+<h3 id="other-uses">Other uses<a class="headerlink" href="#other-uses" title="Permanent link"></a></h3>
+<ul>
+<li>Animation: timed sequence of layouts</li>
+<li>Tracing: refresh display at every step of the program</li>
+<li>(future) Behavioral unit tests: Test whether code changes break previous layout behavior by keeping a reference.gds and creating a test.gds, then send them to klayout&rsquo;s visual diff tool.</li>
+</ul>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link"></a></h2>
+<h4 id="from-salt-package-manager">From salt package manager<a class="headerlink" href="#from-salt-package-manager" title="Permanent link"></a></h4>
+<p>In klayout.app, go to &ldquo;Tools&gt;Manage Packages&rdquo;. Go to &ldquo;Install New Packages&rdquo; and find &ldquo;klayout_ipc&rdquo;. Double-click it, and press &ldquo;Apply&rdquo;.</p>
+<p><em>At the time of writing, the grain is NOT live.</em></p>
+<h4 id="from-source">From source<a class="headerlink" href="#from-source" title="Permanent link"></a></h4>
 <ol>
-<li>From source<ul>
-<li>git clone &hellip;</li>
-<li>ln -s ~/&hellip;/klayout-ipc/klayout_dot_config ~/.klayout/salt/klayout_ipc
-or</li>
-<li>export KLAYOUT_PATH=&rdquo;~/&hellip;/klayout-ipc/klayout_dot_config&rdquo;</li>
-</ul>
-</li>
-<li>From package manager <ul>
-<li>(TODO)</li>
+<li>In a directory of choice, <code>git clone git@github.com:atait/klayout-ipc.git</code></li>
+<li>&ldquo;Install&rdquo; in .klayout system files<ul>
+<li>(OSX, Linux) <code>ln -s ~/your/path/to/klayout-ipc/klayout_dot_config ~/.klayout/salt/klayout_ipc</code></li>
+<li>(Windows) right click the folder and create an alias to C:\Username\KLayout\salt [path right?]</li>
 </ul>
 </li>
 </ol>
+<p>or</p>
+<ol>
+<li>Show klayout where it is<ul>
+<li><code>export KLAYOUT_PATH="~/your/path/to/klayout-ipc/klayout_dot_config"</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link"></a></h2>
+<p>When an open file changes on disk, by default, KLayout asks whether to reload it. These prompts persist when reload is triggered by a communicating process instead of a human. Disable checks by going to klayout.app&rsquo;s preferences &gt; Application &gt; General, and uncheck the box for &ldquo;Check for file updates.&rdquo;</p>
+<p>The lyipc package is visible within klayout&rsquo;s interpreter namespace, but it is not on the system PYTHONPATH. In order for any python-based client to use it, lyipc must be installed with
+<div class="codehilite"><pre>pip install ~/your/path/to/klayout-ipc/klayout_dot_config/python
+</pre></div>
+For development mode, use pip&rsquo;s <code>-e</code> flag.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
-<p>Server side: press Ctrl+I</p>
-<p>Client side: 
+<h4 id="server-side">Server side<a class="headerlink" href="#server-side" title="Permanent link"></a></h4>
+<p>&ndash; press Ctrl+<code>I</code> &ndash;</p>
+<p>or go to &ldquo;Tools&gt;Inter-process communication server&rdquo;</p>
+<p><strong>Warning: clients have the ability to close and reload layout views that are unsaved, including ones in other tabs.</strong> It is highly recommended that you start a second instance of klayout.app dedicated to serving. This has to be done from command line. Tip for UNIX folks, put a shortcut to the klayout executable on your PATH
+<div class="codehilite"><pre>ln -s /Applications/klayout.app/Contents/MacOS/klayout /usr/local/bin/klayout
+</pre></div></p>
+<p>Note: as of now, the port is hard-coded (11078), so there can only be one server at a time. Communication is initiated by the client as a command or query. That means using multiple clients concurrently is possible, but they would clash unless synchronized somehow.</p>
+<h4 id="client-side">Client side<a class="headerlink" href="#client-side" title="Permanent link"></a></h4>
+<p>To load a layout file in the remote window, put these lines
 <div class="codehilite"><pre><span class="kn">import</span> <span class="nn">lyipc.client</span> <span class="kn">as</span> <span class="nn">ipc</span>
 <span class="n">ipc</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;mylayout.gds&#39;</span><span class="p">)</span>
-</pre></div></p>
-<h2 id="released-version-incompatibility">Released version incompatibility<a class="headerlink" href="#released-version-incompatibility" title="Permanent link"></a></h2>
-<p>In my application, I have fully disabled <code>&amp;m_file_changed_timer</code> to prevent the &ldquo;do you want to reload?&rdquo; prompt. In a later version of klayout, this could be controlled in a preference pane. The prompt does not limit functionality; just tolerate it, or, if you can compile from source, comment these lines in <code>layMainWindow.cpp</code>
-<div class="codehilite"><pre><span class="mi">683</span> <span class="c1">// connect (&amp;m_file_changed_timer, SIGNAL (timeout ()), this, SLOT (file_changed_timer()));</span>
-<span class="mi">684</span> <span class="c1">// m_file_changed_timer.setSingleShot (true);</span>
-</pre></div></p>
-<h2 id="author-alex-tait-june-2018">Author: Alex Tait, June 2018<a class="headerlink" href="#author-alex-tait-june-2018" title="Permanent link"></a></h2></article></body></html>
+</pre></div>
+in a file called <code>test-lyipc.py</code>.</p>
+<p>Run it with either a standard python interpreter
+<div class="codehilite"><pre>python <span class="nb">test</span>-lyipc.py
+</pre></div>
+or the klayout general scripting interface (GSI) in non-GUI mode
+<div class="codehilite"><pre>klayout -b -r <span class="nb">test</span>-lyipc.py
+</pre></div>
+The former is faster because a new klayout instance is not created, but of course, the latter must be used for <code>pya</code> to work.</p>
+<p>Usage examples for klayout and non-klayout layout clients are included in this repo.</p>
+<h4 id="author-alex-tait-june-2018">Author: Alex Tait, June 2018<a class="headerlink" href="#author-alex-tait-june-2018" title="Permanent link"></a></h4></article></body></html>

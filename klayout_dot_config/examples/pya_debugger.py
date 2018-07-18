@@ -4,8 +4,8 @@
 
     Then run this from command line with "klayout -b -r for_pya.py"
 '''
+# import klayout.db as pya  # the standalone version (in development)
 import pya
-# import klayout.db as pya
 import lyipc.client as ipc
 import os
 import time

@@ -27,10 +27,10 @@ By separating the processes, the server GUI can be fully featured, initializing 
     - An action is taken. In this case, load that file into the current view
 5. [process #2: lyipc] closes the socket and continues execution
 
-### Other use cases
-- Tracing: refresh display at every step of the program
+### Other uses
 - Animation: timed sequence of layouts
-- (future?) Multi-core layout builds: like multithreading, but on separate CPU's – they need to communicate
+- Tracing: refresh display at every step of the program
+- (future) Behavioral unit tests: Test whether code changes break previous layout behavior by keeping a reference.gds and creating a test.gds, then send them to klayout's visual diff tool.
 
 ## Installation
 #### From salt package manager
