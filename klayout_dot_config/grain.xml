@@ -7,8 +7,8 @@
  <api-version/>
  <title>Klayout IPC</title>
  <doc>Socket communication between klayout and external processes</doc>
- <doc-url>doc/README.html</doc-url>
- <url>https://github.com/atait/klayout-ipc</url>
+ <doc-url>https://github.com/atait/klayout-ipc/blob/master/README.md</doc-url>
+ <url>https://github.com/atait/klayout-ipc.git/trunk/klayout_dot_config</url>
  <license>MIT</license>
  <author>Alex Tait</author>
  <author-contact>alexander.tait@nist.gov</author-contact>
