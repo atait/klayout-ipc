@@ -1,7 +1,14 @@
-# The simplest interpreter you can imagine
+''' The simplest interpreter you can imagine. Currently there are 4 commands and 0 queries
+
+    Other ideas to implement:
+        - query for value of variable as a string
+        - execute arbitrary line of code, return its return value as a string
+        - execute a macro
+'''
 from lyipc import quickmsg, isGSI
 import lyipc.server
 import os
+import traceback
 
 if isGSI():
     import pya
@@ -22,23 +29,35 @@ def hard_load_layout(filename):
             raise
 
 
-def parse_command(cmdStr):
-    if not isGSI():
-        print(f'Received {cmdStr}')
-        return
+def parse_message(message):
+    ''' Takes a message read from the socket and does something with it.
 
-    # if cmdStr == 'kill':
-    #     quickmsg('Stopping server -- remote shutdown')
-    #     pya.Application.exit(pya.Application.instance())
+        The returned payload is not the same as what is returned from the called function:
+        It is prepended with a status token and encoded (as a str) to be sent back over the socket
+    '''
+    return_val = None
+    try:
+        # if message == 'kill':
+        #     quickmsg('Stopping server -- remote shutdown')
+        #     pya.Application.exit(pya.Application.instance())
 
-    elif cmdStr == 'reload view':
-        main = pya.Application.instance().main_window()
-        main.cm_reload()
+        if message == 'reload view':
+            main = pya.Application.instance().main_window()
+            main.cm_reload()
 
-    elif cmdStr.startswith('load '):
-        filename = cmdStr.split(' ')[1]
-        filename = os.path.realpath(filename)
-        quickmsg(filename)
-        hard_load_layout(filename)
+        elif message.startswith('load '):
+            filename = message.split(' ')[1]
+            filename = os.path.realpath(filename)
+            quickmsg(filename)
+            hard_load_layout(filename)
+
+        else:
+            quickmsg(f'Received {message}')
+
+    except Exception:
+        # Convert the stack trace to string to send to client
+        payload = 'ERR ' + repr(traceback.format_exc())  # repr makes it so multi-line strings go as one string
     else:
-        quickmsg(f'Received {cmdStr}')
+        # Tell the client that it worked
+        payload = 'ACK ' + str(return_val)
+    return payload

@@ -5,6 +5,7 @@ import socket
 from lyipc import PORT, isGSI
 import os
 import time
+import sys
 from functools import lru_cache, wraps
 
 
@@ -60,9 +61,18 @@ def send(message='ping 1234', port=PORT):
 
 
 def handle_query(retString):
-    ''' For now all this does is make sure there is handshaking '''
-    if retString != 'ACK':
-        raise Exception('Not acknowledged, instead: ' + retString)
+    ''' Extra check that there is handshaking. Now handles error
+    '''
+    if retString.startswith('ACK '):
+        return retString[4:]
+    elif retString.startswith('ERR '):
+        traceback_repr = retString[4:]
+        # The traceback is sent as a single line as a string repr. Now convert back to multi-line
+        traceback_str = traceback_repr.encode("utf-8").decode('unicode_escape').strip("'")
+        print('\n' + traceback_str)
+        print('^ Server-side error ^')
+        sys.exit(1)
+
 
 
 def trace_pyainsert(layout, file, write_load_delay=0.01):

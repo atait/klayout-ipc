@@ -14,31 +14,23 @@ import pya
 
 class KlayoutServer(pya.QTcpServer):
     def new_connection(self):
-        try:
-            # Handle incoming connection
-            connection = self.nextPendingConnection()
-            message = 'null'
-            while connection.isOpen() and connection.state() == pya.QTcpSocket.ConnectedState:
-                if connection.canReadLine():
-                    payload = connection.readLine()
-                    message = payload.rstrip('\n').rstrip('\r')
-                    connection.write('ACK')
-                else:
-                    connection.waitForReadyRead(500)
+        from lyipc.interpreter import parse_message
+        # Handle incoming connection
+        connection = self.nextPendingConnection()
+        message = 'null'
+        while connection.isOpen() and connection.state() == pya.QTcpSocket.ConnectedState:
+            if connection.canReadLine():
+                payload = connection.readLine()
+                message = payload.rstrip('\n').rstrip('\r')
+                response = parse_message(message)
+                connection.write(response)
+                connection.disconnectFromHost()
+            else:
+                connection.waitForReadyRead(500)
+        signal = pya.qt_signal("disconnected()")
+        slot = pya.qt_slot("deleteLater()")
+        pya.QObject.connect(connection, signal, connection, slot)
 
-            # automatically delete when disconnected
-            connection.disconnectFromHost()
-            signal = pya.qt_signal("disconnected()")
-            slot = pya.qt_slot("deleteLater()")
-            pya.QObject.connect(connection, signal, connection, slot)
-
-            # Do something with what was received
-            from lyipc.interpreter import parse_command
-            parse_command(message)
-
-        except Exception as ex:
-          quickmsg("ERROR " + str(ex))
-          raise
 
     def __init__(self, port=PORT, parent=None):
         pya.QTcpServer.__init__(self, parent)
