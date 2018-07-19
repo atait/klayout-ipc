@@ -15,7 +15,7 @@ fast_realpath = lru_cache(maxsize=4)(os.path.realpath)  # Since the argument is 
 def load(filename):
     filename = fast_realpath(filename)
     # TODO: use a temporary file
-    send(f'load {filename}')
+    send('load {}'.format(filename))
 
 
 def kill():

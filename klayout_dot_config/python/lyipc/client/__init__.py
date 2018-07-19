@@ -11,9 +11,13 @@ from lyipc import isGSI, PORT
 # Determine which socket class to use
 if not isGSI():
     # print('Warning: pya will not be available')
-    import PyQt5.QtNetwork
-    from PyQt5.QtNetwork import QTcpSocket
-    localhost = PyQt5.QtNetwork.QHostAddress.LocalHost
+    import sys
+    if sys.version_info[0] == 2:
+        raise Exception('Please use python >= 3.1 with lyipc for the time being')
+    elif sys.version_info[0] == 3:
+        import PyQt5.QtNetwork
+        from PyQt5.QtNetwork import QTcpSocket
+        localhost = PyQt5.QtNetwork.QHostAddress.LocalHost
 else:
     import pya
     from pya import QTcpSocket
@@ -40,7 +44,7 @@ def send(message='ping 1234', port=PORT):
         else:
             raise Exception('Not acknowledged')
     else:
-        print(f'Connection Fail! (tried {localhost}:{port})')
+        print('Connection Fail! (tried {}:{})'.format(localhost, port))
     # psock.close()
 
 

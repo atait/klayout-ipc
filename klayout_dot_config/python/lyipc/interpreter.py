@@ -5,6 +5,7 @@
         - execute arbitrary line of code, return its return value as a string
         - execute a macro
 '''
+from __future__ import print_function
 from lyipc import quickmsg, isGSI
 import lyipc.server
 import os
@@ -53,7 +54,7 @@ def parse_message(message):
             hard_load_layout(filename)
 
         else:
-            quickmsg(f'Received {message}')
+            quickmsg('Received {}'.format(message))
 
     except Exception:
         # Convert the stack trace to string to send to client
