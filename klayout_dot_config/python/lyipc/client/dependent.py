@@ -52,7 +52,6 @@ def safe_write(writable_obj, filename, write_kwargs=None):
     temp_filename = os.path.join(dirname, '~.' + basename)
     if write_kwargs is None:
         write_kwargs = dict()
-    # import pdb; pdb.set_trace()
     try:
         os.remove(filename)
     except FileNotFoundError:
@@ -66,15 +65,9 @@ def safe_write(writable_obj, filename, write_kwargs=None):
         except FileNotFoundError:
             pass
         raise err
-    # finally:
-    #     try:
-    #         os.remove(temp_filename)
-    #     except FileNotFoundError:
-    #         print('Temp file did not get written')
-    #         pass
 
 
-def klayout_quickplot(writable_obj, filename, fresh=False, write_load_delay=None, write_kwargs=None):
+def klayout_quickplot(writable_obj, filename, fresh=False, write_kwargs=None):
     ''' Does the write, wait, and load all in one.
 
         The write function used is class and language-specific,
@@ -84,15 +77,10 @@ def klayout_quickplot(writable_obj, filename, fresh=False, write_load_delay=None
             writable_obj (object): some object that has a resolvable write GDS method (gdspy.Cell, phidl.Device, pya.Cell, pya.Layout)
             filename (str): file to write to
             fresh (bool): determines whether to load (True) or reload (False)
-            write_load_delay (float): seconds to write between write and load
             write_kwargs (dict): kwargs that will be passed to the write function
     '''
-    if write_kwargs is None:
-        write_kwargs = {}
+    # Write and wait for filename to finish writing
     safe_write(writable_obj, filename, write_kwargs)
-    # Wait for filename to finish writing
-    if write_load_delay is not None:
-        time.sleep(write_load_delay)
     # Tell remote klayout GUI to load/reload it
     if fresh:
         load(filename)
