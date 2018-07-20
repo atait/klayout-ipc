@@ -16,7 +16,7 @@ if not isGSI():
 import pya
 
 
-def hard_load_layout(filename):
+def quiet_load_layout(filename):
     ''' Swallow the error if the file is not completely written yet,
         or if the last file was not completely rendered.
         This doesn't seem to fatally affect the program
@@ -51,7 +51,7 @@ def parse_message(message):
             filename = message.split(' ')[1]
             filename = os.path.realpath(filename)
             quickmsg(filename)
-            hard_load_layout(filename)
+            quiet_load_layout(filename)
 
         else:
             quickmsg('Received {}'.format(message))

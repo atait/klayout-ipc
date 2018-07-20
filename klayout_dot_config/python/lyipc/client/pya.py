@@ -12,7 +12,7 @@ from .general import *
 from .dependent import *
 
 
-def trace_pyainsert(layout, file, write_load_delay=0.01):
+def trace_pyainsert(layout, file):
     ''' Writes to file and loads in the remote instance whenever pya.Shapes.insert is called
         "layout" is what will be written to file and loaded there.
 
@@ -23,7 +23,7 @@ def trace_pyainsert(layout, file, write_load_delay=0.01):
     pya.Shapes.old_insert = pya.Shapes.insert
     def new_insert(self, *args, **kwargs):
         retval = pya.Shapes.old_insert(self, *args, **kwargs)
-        klayout_quickplot(device, file, fresh=False)
+        klayout_quickplot(layout, file, fresh=False)
         return retval
     pya.Shapes.insert = new_insert
 

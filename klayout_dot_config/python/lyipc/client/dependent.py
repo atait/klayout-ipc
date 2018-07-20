@@ -44,27 +44,51 @@ def _get_write_method(writable_obj):
     return getattr(writable_obj, found_meth_name)
 
 
+def safe_write(writable_obj, filename, write_kwargs=None):
+    ''' Writes a temporary file then waits until it finishes writing before moving to the desired filename
+    '''
+    write_func = _get_write_method(writable_obj)
+    dirname, basename = os.path.split(filename)
+    temp_filename = os.path.join(dirname, '~.' + basename)
+    if write_kwargs is None:
+        write_kwargs = dict()
+    try:
+        os.remove(filename)
+    except FileNotFoundError:
+        pass
+    try:
+        write_func(temp_filename, **write_kwargs)
+        os.rename(temp_filename, filename)
+    except Exception as err:
+        try:
+            os.remove(temp_filename)
+        except FileNotFoundError:
+            pass
+        raise err
 
-def klayout_quickplot(writable_obj, file, fresh=False, write_load_delay=0.01, write_kwargs=None):
+
+def klayout_quickplot(writable_obj, filename, fresh=False, write_kwargs=None):
     ''' Does the write, wait, and load all in one.
-        The fresh argument determines whether to load (True) or reload (False)
 
         The write function used is class and language-specific,
         so the ``writable_obj`` is handled according to the _get_write_method function
+
+        Args:
+            writable_obj (object): some object that has a resolvable write GDS method (gdspy.Cell, phidl.Device, pya.Cell, pya.Layout)
+            filename (str): file to write to
+            fresh (bool): determines whether to load (True) or reload (False)
+            write_kwargs (dict): kwargs that will be passed to the write function
     '''
-    if write_kwargs is None:
-        write_kwargs = {}
-    _get_write_method(writable_obj)(file, **write_kwargs)
-    # Wait for file to finish writing
-    time.sleep(write_load_delay)
+    # Write and wait for filename to finish writing
+    safe_write(writable_obj, filename, write_kwargs)
     # Tell remote klayout GUI to load/reload it
     if fresh:
-        load(file)
+        load(filename)
     else:
         reload()
 
 
-def generate_display_function(default_writable_obj, default_file):
+def generate_display_function(default_writable_obj, default_filename):
     ''' A quick way to configure quickplotter into a brief command
 
         Usage::
@@ -73,8 +97,8 @@ def generate_display_function(default_writable_obj, default_file):
             ...
             kqp()
     '''
-    default_file = os.path.realpath(default_file)
+    default_filename = os.path.realpath(default_filename)
     @wraps(klayout_quickplot)
-    def k_quick(writable_obj=default_writable_obj, file=default_file, **kwargs):
-        klayout_quickplot(writable_obj, file, **kwargs)
+    def k_quick(writable_obj=default_writable_obj, filename=default_filename, **kwargs):
+        klayout_quickplot(writable_obj, filename, **kwargs)
     return k_quick

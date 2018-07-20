@@ -15,7 +15,7 @@ debug_file = os.path.realpath('debuglobal.gds')
 
 def simple_create():
     layout = pya.Layout()
-    ipc.trace_pyainsert(layout, debug_file, 0.02)
+    ipc.trace_pyainsert(layout, debug_file)
     layout.dbu = 0.001
     TOP = layout.create_cell('TOP')
     l1 = layout.insert_layer(pya.LayerInfo(1, 0))
@@ -31,7 +31,7 @@ def simple_create():
 
 def tough_create():
     layout = pya.Layout()
-    ipc.trace_pyainsert(layout, debug_file, 1e-4)
+    ipc.trace_pyainsert(layout, debug_file)
     layout.dbu = 0.001
     TOP = layout.create_cell('TOP')
     l1 = layout.insert_layer(pya.LayerInfo(1, 0))
