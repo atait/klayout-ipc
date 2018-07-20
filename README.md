@@ -54,7 +54,7 @@ When an open file changes on disk, by default, KLayout asks whether to reload it
 
 The lyipc package is visible within klayout's interpreter namespace, but it is not on the system PYTHONPATH. In order for any python-based client to use it, lyipc must be installed with
 ```sh
-pip install ~/your/path/to/klayout-ipc/klayout_dot_config/python
+pip install ~/.klayout/salt/klayout_ipc/python
 ```
 For development mode, use pip's `-e` flag.
 

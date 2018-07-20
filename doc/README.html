@@ -1088,11 +1088,11 @@ body .markdown-body
 </li>
 <li>[process #2: lyipc] closes the socket and continues execution</li>
 </ol>
-<h3 id="other-use-cases">Other use cases<a class="headerlink" href="#other-use-cases" title="Permanent link"></a></h3>
+<h3 id="other-uses">Other uses<a class="headerlink" href="#other-uses" title="Permanent link"></a></h3>
 <ul>
-<li>Tracing: refresh display at every step of the program</li>
 <li>Animation: timed sequence of layouts</li>
-<li>(future?) Multi-core layout builds: like multithreading, but on separate CPU&rsquo;s – they need to communicate</li>
+<li>Tracing: refresh display at every step of the program</li>
+<li>(future) Behavioral unit tests: Test whether code changes break previous layout behavior by keeping a reference.gds and creating a test.gds, then send them to klayout&rsquo;s visual diff tool.</li>
 </ul>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link"></a></h2>
 <h4 id="from-salt-package-manager">From salt package manager<a class="headerlink" href="#from-salt-package-manager" title="Permanent link"></a></h4>
@@ -1117,7 +1117,7 @@ body .markdown-body
 <h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link"></a></h2>
 <p>When an open file changes on disk, by default, KLayout asks whether to reload it. These prompts persist when reload is triggered by a communicating process instead of a human. Disable checks by going to klayout.app&rsquo;s preferences &gt; Application &gt; General, and uncheck the box for &ldquo;Check for file updates.&rdquo;</p>
 <p>The lyipc package is visible within klayout&rsquo;s interpreter namespace, but it is not on the system PYTHONPATH. In order for any python-based client to use it, lyipc must be installed with
-<div class="codehilite"><pre>pip install ~/your/path/to/klayout-ipc/klayout_dot_config/python
+<div class="codehilite"><pre>pip install ~/.klayout/salt/klayout_ipc/python
 </pre></div>
 For development mode, use pip&rsquo;s <code>-e</code> flag.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
