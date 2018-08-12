@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 def readme():
     with open('README.rst') as fx:
@@ -11,6 +11,6 @@ setup(name='lyipc',
       author='Alex Tait',
       author_email='alexander.tait@nist.gov',
       license='MIT',
-      packages=['lyipc'],
+      packages=find_packages(),
       install_requires=[],
       )
