@@ -13,8 +13,9 @@
  <dsl-interpreter-name/>
  <text>''' Inter-process communication initialization
 '''
-# Nothing to do here
+
 # Auto-launching the server is a bad idea
+
 pya.Application.instance().main_window().message('lyipc initialized',1000)
 
  </text>
