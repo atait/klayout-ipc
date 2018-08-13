@@ -12,7 +12,7 @@ from .general import *
 from .dependent import *
 
 
-def trace_phidladd(device, file, write_load_delay=0.01):
+def trace_phidladd(device, file):
     ''' Writes to file and loads in the remote instance whenever phidl.Device.add is called
     '''
     phidl.device_layout.Device.old_add = phidl.device_layout.Device.add
