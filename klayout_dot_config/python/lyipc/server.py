@@ -2,6 +2,7 @@
 
     Current state: only way to stop serving is close the application.
 '''
+from __future__ import print_function
 import socket
 import lyipc
 from lyipc import PORT, quickmsg, isGSI
@@ -44,7 +45,7 @@ class KlayoutServer(pya.QTcpServer):
 
     def __init__(self, port=PORT, parent=None):
         pya.QTcpServer.__init__(self, parent)
-        ha = pya.QHostAddress()
-        self.listen(ha, port)
+        localhost = pya.QHostAddress()
+        self.listen(localhost, port)
         self.newConnection(self.new_connection)
-        quickmsg(f'Server initialized with {ha}, {port}')
+        quickmsg('Server initialized with {}, {}'.format(localhost, port))

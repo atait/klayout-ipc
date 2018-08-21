@@ -1,3 +1,4 @@
+from __future__ import print_function
 PORT = 11078
 
 def isGSI():
@@ -28,6 +29,6 @@ def quickmsg(msg):
         # More intrusive
         # pya.MessageBox.info('lyipc', msg, pya.MessageBox.Ok)
         # Less intrusive
-        pya.Application.instance().main_window().message(f'lyipc: {msg}', 2000)
+        pya.Application.instance().main_window().message('lyipc: {}'.format(msg), 2000)
     else:
         print(' lyipc:', msg)
