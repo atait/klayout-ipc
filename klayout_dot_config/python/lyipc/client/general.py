@@ -12,10 +12,18 @@ def reload():
 
 
 fast_realpath = lru_cache(maxsize=4)(os.path.realpath)  # Since the argument is going to be the same every time
-def load(filename):
+def load(filename, mode=None):
+    '''
+        Modes are 
+        - 0 (default): replacing the current layout view
+        - 1: making a new view
+        - 2: adding the layout to the current view (mode 2)
+    '''
     filename = fast_realpath(filename)
-    # TODO: use a temporary file
-    send(f'load {filename}')
+    tokens = ['load', filename]
+    if mode is not None:
+        tokens.append(str(mode))
+    send(' '.join(tokens))
 
 
 def kill():
