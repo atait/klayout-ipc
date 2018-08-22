@@ -1066,7 +1066,7 @@ body .markdown-body
 <h3 id="detail-a-debug-process-flow-looks-like-this">Detail: a debug process flow looks like this<a class="headerlink" href="#detail-a-debug-process-flow-looks-like-this" title="Permanent link"></a></h3>
 <ol>
 <li>[process #1] Launch klayout.app<ul>
-<li>From menu item, start a simple server on port <XXY></li>
+<li>From menu item, start a simple server on port 11078</li>
 </ul>
 </li>
 <li>[process #2: programmer] Run a python program in <em>either</em> klayout or python<ul>
@@ -1077,7 +1077,7 @@ body .markdown-body
 </ul>
 </li>
 <li>[process #2: lyipc] The lyipc.client module will<ul>
-<li>Initiate a socket connection on port <XXY></li>
+<li>Initiate a socket connection on port 11078</li>
 <li>Send a command that means load</li>
 </ul>
 </li>
@@ -1095,15 +1095,14 @@ body .markdown-body
 <li>(future) Behavioral unit tests: Test whether code changes break previous layout behavior by keeping a reference.gds and creating a test.gds, then send them to klayout&rsquo;s visual diff tool.</li>
 </ul>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link"></a></h2>
-<h4 id="from-salt-package-manager">From salt package manager<a class="headerlink" href="#from-salt-package-manager" title="Permanent link"></a></h4>
+<h4 id="server-from-salt-package-manager">Server from salt package manager<a class="headerlink" href="#server-from-salt-package-manager" title="Permanent link"></a></h4>
 <p>In klayout.app, go to &ldquo;Tools&gt;Manage Packages&rdquo;. Go to &ldquo;Install New Packages&rdquo; and find &ldquo;klayout_ipc&rdquo;. Double-click it, and press &ldquo;Apply&rdquo;.</p>
-<p><em>At the time of writing, the grain is NOT live.</em></p>
-<h4 id="from-source">From source<a class="headerlink" href="#from-source" title="Permanent link"></a></h4>
+<h4 id="server-from-source">Server from source<a class="headerlink" href="#server-from-source" title="Permanent link"></a></h4>
 <ol>
 <li>In a directory of choice, <code>git clone git@github.com:atait/klayout-ipc.git</code></li>
 <li>&ldquo;Install&rdquo; in .klayout system files<ul>
 <li>(OSX, Linux) <code>ln -s ~/your/path/to/klayout-ipc/klayout_dot_config ~/.klayout/salt/klayout_ipc</code></li>
-<li>(Windows) right click the folder and create an alias to C:\Username\KLayout\salt [path right?]</li>
+<li>(Windows) right click the folder and create an alias to C:\Username\KLayout\salt [path correct?]</li>
 </ul>
 </li>
 </ol>
@@ -1114,12 +1113,13 @@ body .markdown-body
 </ul>
 </li>
 </ol>
-<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link"></a></h2>
-<p>When an open file changes on disk, by default, KLayout asks whether to reload it. These prompts persist when reload is triggered by a communicating process instead of a human. Disable checks by going to klayout.app&rsquo;s preferences &gt; Application &gt; General, and uncheck the box for &ldquo;Check for file updates.&rdquo;</p>
+<h4 id="client">Client<a class="headerlink" href="#client" title="Permanent link"></a></h4>
 <p>The lyipc package is visible within klayout&rsquo;s interpreter namespace, but it is not on the system PYTHONPATH. In order for any python-based client to use it, lyipc must be installed with
-<div class="codehilite"><pre>pip install ~/your/path/to/klayout-ipc/klayout_dot_config/python
+<div class="codehilite"><pre>pip install ~/.klayout/salt/klayout_ipc/python
 </pre></div>
-For development mode, use pip&rsquo;s <code>-e</code> flag.</p>
+(will be different on windows). For development mode, use pip&rsquo;s <code>-e</code> flag.</p>
+<h4 id="application-setup">Application setup<a class="headerlink" href="#application-setup" title="Permanent link"></a></h4>
+<p>When an open file changes on disk, by default, KLayout asks whether to reload it. These prompts persist when reload is triggered by a communicating process instead of a human. Disable checks by going to klayout.app&rsquo;s preferences &gt; Application &gt; General, and uncheck the box for &ldquo;Check for file updates.&rdquo;</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
 <h4 id="server-side">Server side<a class="headerlink" href="#server-side" title="Permanent link"></a></h4>
 <p>&ndash; press Ctrl+<code>I</code> &ndash;</p>
@@ -1141,5 +1141,5 @@ or the klayout general scripting interface (GSI) in non-GUI mode
 <div class="codehilite"><pre>klayout -b -r <span class="nb">test</span>-lyipc.py
 </pre></div>
 The former is faster because a new klayout instance is not created, but of course, the latter must be used for <code>pya</code> to work.</p>
-<p>Usage examples for klayout and non-klayout layout clients are included in this repo.</p>
+<p>Usage examples for klayout and non-klayout layout clients are included in this repo in the &ldquo;examples&rdquo; folder.</p>
 <h4 id="author-alex-tait-june-2018">Author: Alex Tait, June 2018<a class="headerlink" href="#author-alex-tait-june-2018" title="Permanent link"></a></h4></article></body></html>

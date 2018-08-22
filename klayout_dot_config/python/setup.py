@@ -5,7 +5,7 @@ def readme():
         return fx.read()
 
 setup(name='lyipc',
-      version='0.1.3',
+      version='0.1.4',
       description='Inter-process communication for Klayout',
       long_description=readme(),
       author='Alex Tait',
