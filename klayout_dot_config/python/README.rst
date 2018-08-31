@@ -1,15 +1,17 @@
 KLayout inter-process communication (lyipc)
 ===========================================
 
-This is brief documentation for the client side of the package. To see the full project and documentation, go to https://github.com/atait/klayout-ipc.
+This is brief documentation. To see the full project and documentation, go to https://github.com/atait/klayout-ipc.
 
 Setup
 ***************************************
-The lyipc package is visible within klayout's interpreter namespace, but it is not on the system python path. In order for an external python-based program to use it, lyipc must be installed on the python path.
+If you are a user, do::
 
-This is done in the klayout_dot_config/python directory with::
+    pip install lyipc
 
-    python setup.py install
+If you are installing from source and/or developing, you are probably not reading this on PyPI but rather on github. Anyways, the best way is to install using the local setup.py formulation.::
+
+    pip install -e klayout-ipc/klayout_dot_config/python
 
 Usage
 *****

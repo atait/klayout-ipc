@@ -33,26 +33,41 @@ By separating the processes, the server GUI can be fully featured, initializing 
 - (future) Behavioral unit tests: Test whether code changes break previous layout behavior by keeping a reference.gds and creating a test.gds, then send them to klayout's visual diff tool.
 
 ## Installation
-#### Server from salt package manager
+#### From PyPI (Recommended)
+As of version 0.1.5, installing the python package triggers a script to also install in klayout's system. All you need to do is
+```sh
+pip install lyipc
+```
+
+#### From github (Recommended for developers)
+First, clone the project in a directory of your choice
+```sh
+git clone git@github.com:atait/klayout-ipc.git
+```
+Install the package with regular pip
+```sh
+pip install klayout-ipc/klayout_dot_config/python
+```
+For development mode, use pip's `-e` flag.
+
+As of version 0.1.5, this will also install it into klayout, so you're done.
+
+
+#### From klayout salt package manager
 In klayout.app, go to "Tools>Manage Packages". Go to "Install New Packages" and find "klayout_ipc". Double-click it, and press "Apply".
 
-#### Server from source
-1. In a directory of choice, `git clone git@github.com:atait/klayout-ipc.git`
-2. "Install" in .klayout system files
-    - (OSX, Linux) `ln -s ~/your/path/to/klayout-ipc/klayout_dot_config ~/.klayout/salt/klayout_ipc`
-    - (Windows) right click the folder and create an alias to C:\\Username\KLayout\salt [path correct?]
-
-or
-
-2. Show klayout where it is
-    - `export KLAYOUT_PATH="~/your/path/to/klayout-ipc/klayout_dot_config"`
-
-#### Client
+*You still have to install the client module in your external-to-klayout system python*
 The lyipc package is visible within klayout's interpreter namespace, but it is not on the system PYTHONPATH. In order for any python-based client to use it, lyipc must be installed with
 ```sh
 pip install ~/.klayout/salt/klayout_ipc/python
 ```
-(will be different on windows). For development mode, use pip's `-e` flag.
+or, on Windows
+```sh
+pip install %HOMEDRIVE%%HOMEPATH%/KLayout/salt/klayout_ipc/python
+```
+because... Windows.
+
+
 
 #### Application setup
 When an open file changes on disk, by default, KLayout asks whether to reload it. These prompts persist when reload is triggered by a communicating process instead of a human. Disable checks by going to klayout.app's preferences > Application > General, and uncheck the box for "Check for file updates."

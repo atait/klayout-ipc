@@ -1095,29 +1095,29 @@ body .markdown-body
 <li>(future) Behavioral unit tests: Test whether code changes break previous layout behavior by keeping a reference.gds and creating a test.gds, then send them to klayout&rsquo;s visual diff tool.</li>
 </ul>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link"></a></h2>
-<h4 id="server-from-salt-package-manager">Server from salt package manager<a class="headerlink" href="#server-from-salt-package-manager" title="Permanent link"></a></h4>
+<h4 id="from-pypi-recommended">From PyPI (Recommended)<a class="headerlink" href="#from-pypi-recommended" title="Permanent link"></a></h4>
+<p>As of version 0.1.5, installing the python package triggers a script to also install in klayout&rsquo;s system. All you need to do is
+<div class="codehilite"><pre>pip install lyipc
+</pre></div></p>
+<h4 id="from-github-recommended-for-developers">From github (Recommended for developers)<a class="headerlink" href="#from-github-recommended-for-developers" title="Permanent link"></a></h4>
+<p>First, clone the project in a directory of your choice
+<div class="codehilite"><pre>git clone git@github.com:atait/klayout-ipc.git
+</pre></div>
+Install the package with regular pip
+<div class="codehilite"><pre>pip install klayout-ipc/klayout_dot_config/python
+</pre></div>
+For development mode, use pip&rsquo;s <code>-e</code> flag.</p>
+<p>As of version 0.1.5, this will also install it into klayout, so you&rsquo;re done.</p>
+<h4 id="from-klayout-salt-package-manager">From klayout salt package manager<a class="headerlink" href="#from-klayout-salt-package-manager" title="Permanent link"></a></h4>
 <p>In klayout.app, go to &ldquo;Tools&gt;Manage Packages&rdquo;. Go to &ldquo;Install New Packages&rdquo; and find &ldquo;klayout_ipc&rdquo;. Double-click it, and press &ldquo;Apply&rdquo;.</p>
-<h4 id="server-from-source">Server from source<a class="headerlink" href="#server-from-source" title="Permanent link"></a></h4>
-<ol>
-<li>In a directory of choice, <code>git clone git@github.com:atait/klayout-ipc.git</code></li>
-<li>&ldquo;Install&rdquo; in .klayout system files<ul>
-<li>(OSX, Linux) <code>ln -s ~/your/path/to/klayout-ipc/klayout_dot_config ~/.klayout/salt/klayout_ipc</code></li>
-<li>(Windows) right click the folder and create an alias to C:\Username\KLayout\salt [path correct?]</li>
-</ul>
-</li>
-</ol>
-<p>or</p>
-<ol>
-<li>Show klayout where it is<ul>
-<li><code>export KLAYOUT_PATH="~/your/path/to/klayout-ipc/klayout_dot_config"</code></li>
-</ul>
-</li>
-</ol>
-<h4 id="client">Client<a class="headerlink" href="#client" title="Permanent link"></a></h4>
-<p>The lyipc package is visible within klayout&rsquo;s interpreter namespace, but it is not on the system PYTHONPATH. In order for any python-based client to use it, lyipc must be installed with
+<p><em>You still have to install the client module in your external-to-klayout system python</em>
+The lyipc package is visible within klayout&rsquo;s interpreter namespace, but it is not on the system PYTHONPATH. In order for any python-based client to use it, lyipc must be installed with
 <div class="codehilite"><pre>pip install ~/.klayout/salt/klayout_ipc/python
 </pre></div>
-(will be different on windows). For development mode, use pip&rsquo;s <code>-e</code> flag.</p>
+or, on Windows
+<div class="codehilite"><pre>pip install %HOMEDRIVE%%HOMEPATH%/KLayout/salt/klayout_ipc/python
+</pre></div>
+because&hellip; Windows.</p>
 <h4 id="application-setup">Application setup<a class="headerlink" href="#application-setup" title="Permanent link"></a></h4>
 <p>When an open file changes on disk, by default, KLayout asks whether to reload it. These prompts persist when reload is triggered by a communicating process instead of a human. Disable checks by going to klayout.app&rsquo;s preferences &gt; Application &gt; General, and uncheck the box for &ldquo;Check for file updates.&rdquo;</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
