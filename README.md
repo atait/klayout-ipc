@@ -13,14 +13,14 @@ By separating the processes, the server GUI can be fully featured, initializing 
 
 ### Detail: a debug process flow looks like this
 1. [process #1] Launch klayout.app
-    - From menu item, start a simple server on port <XXY>
+    - From menu item, start a simple server on port 11078
 2. [process #2: programmer] Run a python program in _either_ klayout or python
     - Import `lyipc` client package
     - Stop this program in a debugger like PDB or Spyder (examine/change program variables)
     - Write to a file "x.gds"
     - Call `ipc.load("x.gds")`
 3. [process #2: lyipc] The lyipc.client module will
-    - Initiate a socket connection on port <XXY>
+    - Initiate a socket connection on port 11078
     - Send a command that means load
 4. [process #1] Upon receiving a connection request
     - Received command is parsed
@@ -33,30 +33,44 @@ By separating the processes, the server GUI can be fully featured, initializing 
 - (future) Behavioral unit tests: Test whether code changes break previous layout behavior by keeping a reference.gds and creating a test.gds, then send them to klayout's visual diff tool.
 
 ## Installation
-#### From salt package manager
+#### From PyPI (Recommended)
+As of version 0.1.5, installing the python package triggers a script to also install in klayout's system. All you need to do is
+```sh
+pip install lyipc
+```
+
+#### From github (Recommended for developers)
+First, clone the project in a directory of your choice
+```sh
+git clone git@github.com:atait/klayout-ipc.git
+```
+Install the package with regular pip
+```sh
+pip install klayout-ipc/klayout_dot_config/python
+```
+For development mode, use pip's `-e` flag.
+
+As of version 0.1.5, this will also install it into klayout, so you're done.
+
+
+#### From klayout salt package manager
 In klayout.app, go to "Tools>Manage Packages". Go to "Install New Packages" and find "klayout_ipc". Double-click it, and press "Apply".
 
-_At the time of writing, the grain is NOT live._
-
-#### From source
-1. In a directory of choice, `git clone git@github.com:atait/klayout-ipc.git`
-2. "Install" in .klayout system files
-    - (OSX, Linux) `ln -s ~/your/path/to/klayout-ipc/klayout_dot_config ~/.klayout/salt/klayout_ipc`
-    - (Windows) right click the folder and create an alias to C:\\Username\KLayout\salt [path right?]
-
-or
-
-2. Show klayout where it is
-    - `export KLAYOUT_PATH="~/your/path/to/klayout-ipc/klayout_dot_config"`
-
-## Setup
-When an open file changes on disk, by default, KLayout asks whether to reload it. These prompts persist when reload is triggered by a communicating process instead of a human. Disable checks by going to klayout.app's preferences > Application > General, and uncheck the box for "Check for file updates."
-
+*You still have to install the client module in your external-to-klayout system python*
 The lyipc package is visible within klayout's interpreter namespace, but it is not on the system PYTHONPATH. In order for any python-based client to use it, lyipc must be installed with
 ```sh
 pip install ~/.klayout/salt/klayout_ipc/python
 ```
-For development mode, use pip's `-e` flag.
+or, on Windows
+```sh
+pip install %HOMEDRIVE%%HOMEPATH%/KLayout/salt/klayout_ipc/python
+```
+because... Windows.
+
+
+
+#### Application setup
+When an open file changes on disk, by default, KLayout asks whether to reload it. These prompts persist when reload is triggered by a communicating process instead of a human. Disable checks by going to klayout.app's preferences > Application > General, and uncheck the box for "Check for file updates."
 
 ## Usage
 #### Server side
@@ -89,6 +103,6 @@ klayout -b -r test-lyipc.py
 ```
 The former is faster because a new klayout instance is not created, but of course, the latter must be used for `pya` to work.
 
-Usage examples for klayout and non-klayout layout clients are included in this repo.
+Usage examples for klayout and non-klayout layout clients are included in this repo in the "examples" folder.
 
 #### Author: Alex Tait, June 2018
