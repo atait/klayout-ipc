@@ -6,7 +6,7 @@
         - execute a macro
 '''
 from __future__ import print_function
-from lyipc import quickmsg, isGSI
+from lygadgets import message, isGSI
 import lyipc.server
 import os
 import traceback
@@ -21,7 +21,7 @@ def quiet_load_layout(filename, mode=0):
         or if the last file was not completely rendered.
         This doesn't seem to fatally affect the program.
 
-        Modes are 
+        Modes are
         - 0 (default): replacing the current layout view
         - 1: making a new view
         - 2: adding the layout to the current view (mode 2)
@@ -46,7 +46,7 @@ def parse_message(message):
     tokens = message.split(' ')
     try:
         # if message == 'kill':
-        #     quickmsg('Stopping server -- remote shutdown')
+        #     message('Stopping server -- remote shutdown')
         #     pya.Application.exit(pya.Application.instance())
 
         if tokens == ['reload', 'view']:
@@ -55,7 +55,7 @@ def parse_message(message):
 
         elif tokens[0] == 'load':
             filename = os.path.realpath(tokens[1])
-            quickmsg(filename)
+            message(filename)
             if len(tokens) > 2:
                 mode = int(tokens[2])
                 quiet_load_layout(filename, mode)
@@ -63,7 +63,7 @@ def parse_message(message):
                 quiet_load_layout(filename)
 
         else:
-            quickmsg('Received {}'.format(message))
+            message('Received {}'.format(message))
 
     except Exception:
         # Convert the stack trace to string to send to client

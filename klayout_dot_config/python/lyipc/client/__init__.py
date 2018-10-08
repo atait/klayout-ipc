@@ -5,7 +5,9 @@
         - phidl.py is phidl specific
 '''
 from __future__ import print_function
-from lyipc import isGSI, PORT
+
+import lyipc
+from lygadgets import isGSI
 
 
 # Determine which socket class to use
@@ -24,7 +26,7 @@ else:
     localhost = 'localhost'
 
 
-def send(message='ping 1234', port=PORT):
+def send(message='ping 1234', port=lyipc.PORT):
     ''' Sends a raw message
 
         Trick here is that PyQt5 does not do automatic str<->byte encoding, but pya does. Also something weird with the addresses

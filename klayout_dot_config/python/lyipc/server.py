@@ -3,9 +3,10 @@
     Current state: only way to stop serving is close the application.
 '''
 from __future__ import print_function
+
 import socket
 import lyipc
-from lyipc import PORT, quickmsg, isGSI
+from lygadgets import message, isGSI
 
 if not isGSI():
     raise RuntimeError('Non-klayout serving does not make sense')
@@ -43,9 +44,9 @@ class KlayoutServer(pya.QTcpServer):
         pya.QObject.connect(connection, signal, connection, slot)
 
 
-    def __init__(self, port=PORT, parent=None):
+    def __init__(self, port=lyipc.PORT, parent=None):
         pya.QTcpServer.__init__(self, parent)
         localhost = pya.QHostAddress()
         self.listen(localhost, port)
         self.newConnection(self.new_connection)
-        quickmsg('Server initialized with {}, {}'.format(localhost, port))
+        message('Server initialized with {}, {}'.format(localhost, port))

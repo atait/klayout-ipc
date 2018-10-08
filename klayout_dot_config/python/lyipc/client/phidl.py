@@ -55,11 +55,11 @@ def save_or_visualize(device_name=None, out_file=None):
 
 
 def contained_geometry(func):
-    ''' 
+    '''
         Converts a function that takes a Device argument to one that takes a filename argument.
         This is used to develop fixed geometry creation blocks and then save them as reference files.
         Bad idea to try to use this in a library or call it from other functions.
-        
+
         func should take *only one* argument that is a Device, modify that Device, and return nothing.
 
         It's sort of a decorator version of save_or_visualize.
