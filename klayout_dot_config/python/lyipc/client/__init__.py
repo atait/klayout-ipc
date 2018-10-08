@@ -64,5 +64,5 @@ def handle_query(retString):
         sys.exit(1)
 
 
-from .general import *
-from .dependent import *
+from lyipc.client.general import *
+from lyipc.client.dependent import *

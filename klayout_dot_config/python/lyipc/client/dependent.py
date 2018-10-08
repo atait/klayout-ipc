@@ -5,7 +5,7 @@ from __future__ import print_function
 import os
 import time
 from functools import wraps
-from .general import load, reload
+from lyipc.client.general import load, reload
 
 
 global __unbound_method_names

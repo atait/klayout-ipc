@@ -8,8 +8,8 @@ import time
 import os
 
 # Makes it so that only one import is needed: lyipc.client.phidl will drop in for lyipc.client
-from .general import *
-from .dependent import *
+from lyipc.client.general import *
+from lyipc.client.dependent import *
 
 
 def trace_pyainsert(layout, file):

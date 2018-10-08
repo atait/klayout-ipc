@@ -1,6 +1,6 @@
 ''' These are functions that are independent of the layout package '''
 from __future__ import print_function
-from . import send
+from lyipc.client import send
 from functools import lru_cache
 import os
 import time
