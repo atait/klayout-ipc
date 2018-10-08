@@ -84,7 +84,7 @@ class PostInstall(install):
 
 
 setup(name='lyipc',
-      version='0.1.6',
+      version='0.1.7',
       description='Inter-process communication for Klayout',
       long_description=readme(),
       author='Alex Tait',
