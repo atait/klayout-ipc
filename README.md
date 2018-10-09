@@ -106,3 +106,4 @@ The former is faster because a new klayout instance is not created, but of cours
 Usage examples for klayout and non-klayout layout clients are included in this repo in the "examples" folder.
 
 #### Author: Alex Tait, June 2018
+#### National Institute of Standards and Technology, Boulder, CO, USA
