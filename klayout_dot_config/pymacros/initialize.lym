@@ -19,7 +19,8 @@
 import pya
 import os
 
-pya.Application.instance().main_window().message('Initializing lyipc', 5000)
+from lygadgets import message
+message('Initializing lyipc', 5000)
 
 # Attempt to install the python package in the system
 pypackage_name = 'lyipc'

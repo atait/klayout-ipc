@@ -29,12 +29,12 @@ class KlayoutServer(pya.QTcpServer):
         from lyipc.interpreter import parse_message
         # Handle incoming connection
         connection = self.nextPendingConnection()
-        message = 'null'
+        msg = 'null'
         while connection.isOpen() and connection.state() == pya.QTcpSocket.ConnectedState:
             if connection.canReadLine():
                 payload = connection.readLine()
-                message = payload.rstrip('\n').rstrip('\r')
-                response = parse_message(message)
+                msg = payload.rstrip('\n').rstrip('\r')
+                response = parse_message(msg)
                 connection.write(response)
                 connection.disconnectFromHost()
             else:

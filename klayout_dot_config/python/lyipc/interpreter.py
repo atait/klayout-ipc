@@ -36,16 +36,18 @@ def quiet_load_layout(filename, mode=0):
             raise
 
 
-def parse_message(message):
-    ''' Takes a message read from the socket and does something with it.
+def parse_message(msg):
+    ''' Takes a msg read from the socket and does something with it.
+
+        Careful of name conflict with lygadgets.
 
         The returned payload is not the same as what is returned from the called function:
         It is prepended with a status token and encoded (as a str) to be sent back over the socket
     '''
     return_val = None
-    tokens = message.split(' ')
+    tokens = msg.split(' ')
     try:
-        # if message == 'kill':
+        # if msg == 'kill':
         #     message('Stopping server -- remote shutdown')
         #     pya.Application.exit(pya.Application.instance())
 
@@ -63,7 +65,7 @@ def parse_message(message):
                 quiet_load_layout(filename)
 
         else:
-            message('Received {}'.format(message))
+            message('Received {}'.format(msg))
 
     except Exception:
         # Convert the stack trace to string to send to client
