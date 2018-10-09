@@ -21,7 +21,7 @@ if not isGSI():
         from PyQt5.QtNetwork import QTcpSocket
         localhost = PyQt5.QtNetwork.QHostAddress.LocalHost
 else:
-    import pya
+    from lygadgets import pya
     from pya import QTcpSocket
     localhost = 'localhost'
 

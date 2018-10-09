@@ -16,5 +16,5 @@ setup(name='lyipc',
       license='MIT',
       packages=['lyipc', 'lyipc/client'],
       install_requires=['lygadgets'],
-      cmdclass=my_postinstall,
+      cmdclass={},
       )

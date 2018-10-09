@@ -2,7 +2,7 @@
     There is not necessarily any similarity with implementation in other languages
 '''
 from __future__ import print_function
-import pya
+from lygadgets import pya
 
 import time
 import os
