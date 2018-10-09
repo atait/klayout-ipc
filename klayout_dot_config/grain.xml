@@ -3,7 +3,7 @@
  <name>klayout_ipc</name>
  <token/>
  <hidden>false</hidden>
- <version>0.1.10</version>
+ <version>0.1.11</version>
  <api-version/>
  <title>KLayout IPC</title>
  <doc>Socket communication between klayout and external processes</doc>
