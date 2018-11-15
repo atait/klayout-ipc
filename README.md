@@ -28,18 +28,22 @@ By separating the processes, the server GUI can be fully featured, initializing 
 5. [process #2: lyipc] closes the socket and continues execution
 
 ### Other uses
+- XOR testing with [lytest](https://github.com/atait/lytest): automatically presents rich information upon geometric behavior changes
 - Animation: timed sequence of layouts
 - Tracing: refresh display at every step of the program
-- (future) Behavioral unit tests: Test whether code changes break previous layout behavior by keeping a reference.gds and creating a test.gds, then send them to klayout's visual diff tool.
 
 ## Installation
-#### From PyPI (Recommended)
-As of version 0.1.5, installing the python package triggers a script to also install in klayout's system. All you need to do is
+#### From PyPI
 ```sh
 pip install lyipc
 ```
+You then have to install it into klayout with this command
+```bash
+lygadget_link lyipc
+# lygadget_link start_server.lym
+```
 
-#### From github (Recommended for developers)
+#### From github
 First, clone the project in a directory of your choice
 ```sh
 git clone git@github.com:atait/klayout-ipc.git
@@ -54,19 +58,7 @@ As of version 0.1.5, this will also install it into klayout, so you're done.
 
 
 #### From klayout salt package manager
-In klayout.app, go to "Tools>Manage Packages". Go to "Install New Packages" and find "klayout_ipc". Double-click it, and press "Apply".
-
-*You still have to install the client module in your external-to-klayout system python*
-The lyipc package is visible within klayout's interpreter namespace, but it is not on the system PYTHONPATH. In order for any python-based client to use it, lyipc must be installed with
-```sh
-pip install ~/.klayout/salt/klayout_ipc/python
-```
-or, on Windows
-```sh
-pip install %HOMEDRIVE%%HOMEPATH%/KLayout/salt/klayout_ipc/python
-```
-because... Windows.
-
+As of 0.1.12, this is no longer supported. The reason is that it is difficult for klayout to detect what version of python will be used outside of the klayout interpreter.
 
 
 #### Application setup
