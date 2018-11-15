@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<klayout-macro>
+ <description>lyipc initialize</description>
+ <version/>
+ <category>pymacros</category>
+ <prolog/>
+ <epilog/>
+ <doc/>
+ <autorun>true</autorun>
+ <autorun-early>false</autorun-early>
+ <shortcut/>
+ <show-in-menu>false</show-in-menu>
+ <group-name/>
+ <menu-path/>
+ <interpreter>python</interpreter>
+ <dsl-interpreter-name/>
+ <text>
+
+# This both confirms that lyipc is linked and that lygadgets is linked
+
+import pya
+
+try:
+    import lygadgets
+except:
+    pya.MessageBox.info('Message for you',
+                        ('lygadgets has not been linked.\n' +
+                         'Go into terminal/command line anywhere and type\n\n' +
+                         'lygadgets_link lygadgets'),
+                        pya.MessageBox.Ok)
+else:
+    lygadgets.message_loud('Initializing lyipc')
+
+</text>
+</klayout-macro>
