@@ -19,7 +19,6 @@
 # This both confirms that lyipc is linked and that lygadgets is linked
 
 import pya
-
 try:
     import lygadgets
 except:
@@ -29,7 +28,7 @@ except:
                          'lygadgets_link lygadgets'),
                         pya.MessageBox.Ok)
 else:
-    lygadgets.message_loud('Initializing lyipc')
+    lygadgets.message('Initializing lyipc')
 
 </text>
 </klayout-macro>
