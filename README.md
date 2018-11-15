@@ -11,6 +11,9 @@ __The main application of lyipc__ is a graphical debugging workflow that uses th
 
 By separating the processes, the server GUI can be fully featured, initializing a large virtual program memory, while the client can be pretty lightweight.
 
+![](icons/lyipc.png?raw=true)
+
+
 ### Detail: a debug process flow looks like this
 1. [process #1] Launch klayout.app
     - From menu item, start a simple server on port 11078
