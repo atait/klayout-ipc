@@ -34,35 +34,37 @@ By separating the processes, the server GUI can be fully featured, initializing 
 
 ## Installation
 #### From PyPI
+
 ```sh
 pip install lyipc
 ```
+
 You then have to install it into klayout with this command
+
 ```bash
-lygadget_link lyipc
-# lygadget_link start_server.lym
+lygadgets_link lyipc
 ```
 
 #### From github
-First, clone the project in a directory of your choice
+Clone the project in a directory of your choice
+
 ```sh
 git clone git@github.com:atait/klayout-ipc.git
+pip install klayout-ipc/
 ```
-Install the package with regular pip
-```sh
-pip install klayout-ipc/klayout_dot_config/python
+
+For development mode, use pip's `-e` flag. You then have to install it into klayout with this command
+
+```bash
+lygadgets_link lyipc
 ```
-For development mode, use pip's `-e` flag.
-
-As of version 0.1.5, this will also install it into klayout, so you're done.
-
 
 #### From klayout salt package manager
 As of 0.1.12, this is no longer supported. The reason is that it is difficult for klayout to detect what version of python will be used outside of the klayout interpreter.
 
-
 #### Application setup
 When an open file changes on disk, by default, KLayout asks whether to reload it. These prompts persist when reload is triggered by a communicating process instead of a human. Disable checks by going to klayout.app's preferences > Application > General, and uncheck the box for "Check for file updates."
+
 
 ## Usage
 #### Server side

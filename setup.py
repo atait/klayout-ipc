@@ -3,7 +3,7 @@ import os
 
 
 def readme():
-    with open('README.rst') as fx:
+    with open('README.md') as fx:
         return fx.read()
 
 
@@ -16,5 +16,7 @@ setup(name='lyipc',
       license='MIT',
       packages=['lyipc', 'lyipc/client'],
       install_requires=['lygadgets'],
+      package_data={'': ['lymacros/start_server.lym']},
+      include_package_data=True,
       cmdclass={},
       )
