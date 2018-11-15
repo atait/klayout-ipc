@@ -11,13 +11,13 @@ install:
   - pip install .
 # this is a dummy script
 script:
-  - DOCKER=1 echo no tests to run
+  - DOCKER=1 python simple_test.py
 
 deploy:
   provider: pypi
   user: atait
   password:
-    secure: alA/VERi2j9a8Chr65e44Cc8uXbNZ0kRfZVXnqh/6iHpwCYN+e4AdQCsCFmbO7nNcxtDl4c16ZP0armKdbhrUlXA+cDyHL4B6API9YGg2VTTvmax7gu5xBD1nlnesziXir8YsGMkAr7wBrwlNuDTeG+l9+2S5dOxho3qz4fsNN8h+YzMBu1kzZfTYFxsTI9Zdrd99mXCmW7nr3rN/1TP3hf5O9H373c+etAiKlPfeC7J1+T4jVBieSuU/tfYaWHYMwcdKsWqK1d0QzA5YAh6HQW5dB6TAPQmrMalU2Ffn3isUPPUvb1UHJfn5i2FtELaNFqaz16gbFJ6i8+U4YxV/QrhhtM+Ho2tB+AyTVSNIepvgEQqGJfI314eOrTuvX3wbvY5NkgB83iV9nMBfsIJpsCK0+ZlPDYP71rkPDmBrAJxm3uQyeIikL/jgakvN1Je5rXnZgdHVSJn/YKSmWw7faXRPR3j0B6IN5kIHDwkGVXOZfXUaTVkwYoOY2KCydq2YzcCBZtGu3M7ojg3zGXfCtpJ2VwRs6Gedq8bzluZYx9OMbz5HioOOBOPxfbHNZzxa28e0gTB3KvnI/bEMZclWuJ0AxAT3A1XV/voCRp+2Th1lQPqlBjQdXKovssd8WsQWIz7r09D28EbMRyp311CisQhbE3HdNYDB3kqDL+sOB8=
+    secure: "W/vDZb6Bb33nG7HEXAfIwhijnwxt5g3KMmu5r5lqXaGhFL/nuYPCQ0X50s/YMljIgW4LfaRWgsZeVDmQ+4jizR7Ec5TKXl57f/gvrfYNAKA6tmZzXED74CKtf1YyYH174weg37CM+Cd4lMNUBSDRrg3rIeOPbXJg8rs4TWxpOIlAGcap/J9NoAUGulu4W66vXYCVFo7/ib2xrnVY9KoHyzyopoe2MIh3Z6h7IGtgVaGNQk4QFvwID8hofjh6iM+LRInoMFT+J7blsJ/eZjhflJDhrwxm4jsTSmGsq7JarlCVT70MYKIfiYthbu1Lt+SE2RzRERmsNJ5jyutDNngEkOCj1TX/W8sNR4KEBASWKHtpu9bWmA8uqzRpMpGr9Zzmodk7C09uIsQ55o8OReoCviF+iPgrHxt5ixV3lZnHd+MnA9amJb7aC+0dMfsku3KvMmAV7Eqenzv5e/aqBztZR38NasJGgIcrpqdWiefBCP+Yq7TpW55f3ebnSj4g30P4MLpDbVYB9bDE7csXNqPJzIuByk6bMyCVcTH3lV3//kFpCUt/sEBLlKqKXU3xteqp7ntf1zhqsabOQh8M/9tM+kFQTwyzI5Qb+S3CgR26LB5M1sQeeu/3t43bcvTFBMwpTts8lUAtvUDFQKGL1y65+4c8vXsWQ8NtWy3n6X+qYec="
   distributions: "sdist bdist_wheel"
   on:
     tags: true
