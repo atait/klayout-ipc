@@ -16,7 +16,7 @@ setup(name='lyipc',
       license='MIT',
       packages=['lyipc', 'lyipc/client'],
       install_requires=['lygadgets'],
-      package_data={'': ['lymacros/start_server.lym']},
+      package_data={'': ['*.lym']},
       include_package_data=True,
       cmdclass={},
       )
