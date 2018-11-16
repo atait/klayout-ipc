@@ -6,7 +6,7 @@
         - execute a macro
 '''
 from __future__ import print_function
-from lygadgets import message, isGSI
+from lygadgets import message, message_loud, isGSI
 import lyipc.server
 import os
 import traceback
@@ -54,6 +54,9 @@ def parse_message(msg):
         if tokens == ['reload', 'view']:
             main = pya.Application.instance().main_window()
             main.cm_reload()
+
+        elif tokens[0] == 'ping':
+            message_loud('I heard something')
 
         elif tokens[0] == 'load':
             filename = os.path.realpath(tokens[1])

@@ -8,6 +8,7 @@ from __future__ import print_function
 
 import lyipc
 from lygadgets import isGSI
+import socket
 
 
 # Determine which socket class to use
@@ -19,11 +20,18 @@ if not isGSI():
     elif sys.version_info[0] == 3:
         import PyQt5.QtNetwork
         from PyQt5.QtNetwork import QTcpSocket
-        localhost = PyQt5.QtNetwork.QHostAddress.LocalHost
+        # localhost = '127.0.0.1'
 else:
     from lygadgets import pya
     from pya import QTcpSocket
-    localhost = 'localhost'
+    # localhost = 'localhost'
+
+target_host = None
+def set_target_hostname(hostname_or_ip):
+    global target_host
+    target_host = socket.gethostbyname(hostname_or_ip)
+
+set_target_hostname('localhost')
 
 
 def send(message='ping 1234', port=lyipc.PORT):
@@ -35,7 +43,7 @@ def send(message='ping 1234', port=lyipc.PORT):
     psock = QTcpSocket()
     if not isGSI():
         payload = payload.encode()
-    psock.connectToHost(localhost, port)
+    psock.connectToHost(target_host, port)
     if psock.waitForConnected():
         psock.write(payload)
         if psock.waitForReadyRead(3000):
@@ -46,7 +54,7 @@ def send(message='ping 1234', port=lyipc.PORT):
         else:
             raise Exception('Not acknowledged')
     else:
-        print('Connection Fail! (tried {}:{})'.format(localhost, port))
+        print('Connection Fail! (tried {}:{})'.format(target_host, port))
     # psock.close()
 
 
