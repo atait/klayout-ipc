@@ -129,7 +129,7 @@ Following are the steps to enabling this
 #### Network IPC (Done)
 Run a server on one computer. Configure something in lyipc in the second computer. Send lyipc commands. At first, do load with the gds already on the first computer. Next, combine with rsync and gds on local computer with client.load
 
-#### stdout piping
+#### stdout piping (don't bother)
 Test script will look something like
 ```python
 with redirect_stdout():
@@ -139,7 +139,7 @@ This script should be initiated by the laptop but run on the HPC.
 
 I got this working, but its not live.
 
-#### remote build
+#### remote build (Done)
 1. [laptop user] lyipc-job script.py
 1. [laptop] rsync script.py
 1. [HPC] python script.py
@@ -147,10 +147,14 @@ I got this working, but its not live.
 
 Should this use container functions?
 
-#### file transfer and IPC and lytest
+#### file transfer and IPC and lytest (done)
 Set some configuration of lytest, which sets some configuration of lyipc. Run `lytest diff file1.gds file2.gds`. These files are shipped to remote. XOR is run there. Error is detected and sent back to the klayout GUI of the first computer. This will involve actual file transfer.
 
+Edit: this did not set anything in lytest. It was a matter of lyipc:`set_target_hostname` and the HPC using `ship_file` to get things back down.
+
+
 #### script building
+Not yet... just need to sync the ref_layouts.
 lytest not only sends a ref_layout but also a script. This scripted layout is built remotely. The XOR is done remotely.
 
 #### tiling

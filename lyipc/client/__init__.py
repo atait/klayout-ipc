@@ -37,7 +37,7 @@ def send(message='ping 1234', port=lyipc.PORT):
     psock = QTcpSocket()
     if not isGSI():
         payload = payload.encode()
-    psock.connectToHost(get_target_hostname(), port)
+    psock.connectToHost(get_target_hostname(incl_user=False), port)
     if psock.waitForConnected():
         psock.write(payload)
         if psock.waitForReadyRead(3000):
@@ -48,7 +48,7 @@ def send(message='ping 1234', port=lyipc.PORT):
         else:
             raise Exception('Not acknowledged')
     else:
-        print('Connection Fail! (tried {}:{})'.format(get_target_hostname(), port))
+        print('Connection Fail! (tried {}:{})'.format(get_target_hostname(incl_user=False), port))
     # psock.close()
 
 

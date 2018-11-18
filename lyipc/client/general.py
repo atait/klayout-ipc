@@ -27,7 +27,6 @@ def load(filename, mode=None):
     tokens = ['load', filename]
     if mode is not None:
         tokens.append(str(mode))
-    target
     send(' '.join(tokens))
 
 

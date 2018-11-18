@@ -8,6 +8,8 @@ def set_target_hostname(hostalias, persist=False):
     ''' if it is a remote, you must have already set up an RSA key and alias in your ~/.ssh/config file.
         On that computer, this computer's RSA key needs to be in ~/.ssh/authorized_keys.
         Instructions: https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2
+
+        Example: atait@tait-computer
     '''
     global target_host
     if hostalias == 'localhost':
@@ -17,11 +19,14 @@ def set_target_hostname(hostalias, persist=False):
         os.environ['LYIPCTARGET'] = target_host
 
 
-def get_target_hostname():
+def get_target_hostname(incl_user=True):
     try:
-        return os.environ['LYIPCTARGET']
+        host = os.environ['LYIPCTARGET']
     except KeyError:
-        return target_host
+        host = target_host
+    if not incl_user:
+        host = host.split('@')[-1]
+    return host
 
 
 set_target_hostname('localhost')
