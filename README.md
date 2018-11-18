@@ -127,7 +127,7 @@ Here is the process
 Following are the steps to enabling this
 
 #### Network IPC (Done)
-Run a server on one computer. Configure something in lyipc in the second computer. Send lyipc commands. At first, do load with the gds already on the first computer.
+Run a server on one computer. Configure something in lyipc in the second computer. Send lyipc commands. At first, do load with the gds already on the first computer. Next, combine with rsync and gds on local computer with client.load
 
 #### stdout piping
 Test script will look something like
@@ -135,9 +135,19 @@ Test script will look something like
 with redirect_stdout():
     print('heyo')
 ```
-This script should be initiated by the laptop
+This script should be initiated by the laptop but run on the HPC.
 
-#### file transfer and IPC
+I got this working, but its not live.
+
+#### remote build
+1. [laptop user] lyipc-job script.py
+1. [laptop] rsync script.py
+1. [HPC] python script.py
+1. [HPC] rsync output.gds
+
+Should this use container functions?
+
+#### file transfer and IPC and lytest
 Set some configuration of lytest, which sets some configuration of lyipc. Run `lytest diff file1.gds file2.gds`. These files are shipped to remote. XOR is run there. Error is detected and sent back to the klayout GUI of the first computer. This will involve actual file transfer.
 
 #### script building
