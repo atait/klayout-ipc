@@ -72,31 +72,7 @@ def ship_file(local_file):
     local_file = os.path.realpath(local_file)
     # rel_filepath = os.sep.join(local_file.split(os.sep)[-3:-1])  # pick off a few directories to avoid name clashes
     rel_filepath = ''
-    remote_path = os.path.join('~', 'tmp_lypic', rel_filepath)
+    remote_path = os.path.join('tmp_lypic', rel_filepath)
     remote_file = os.path.join(remote_path, os.path.basename(local_file))
-    # before rsyncing you have to mirror it on this computer
-    # import pdb; pdb.set_trace()
-    # local_mirror = remote_path
-    # mirror_file = os.path.join(local_mirror, os.path.basename(local_file))
-    # try:
-    #     os.mkdir(os.path.expanduser(local_mirror))
-    # except FileExistsError:
-    #     pass
-    # shutil.copy2(local_file, os.path.expanduser(local_mirror))
-    # # shutil.copy2('/Users/ant12/Documents/git-projects/layout-code/klayout-ipc/examples/box.gds',
-    # #              '/Users/ant12/tmp_lyipc/klayout-ipc/examples/')
-    # rsync(os.path.expanduser(mirror_file), get_target_hostname() + ':' + remote_path)
-    # return remote_file
-    # before rsyncing you have to mirror it on this computer
-    import pdb; pdb.set_trace()
-    local_mirror = remote_path
-    mirror_file = os.path.join(local_mirror, os.path.basename(local_file))
-    # try:
-    #     os.mkdir(os.path.expanduser(local_mirror))
-    # except FileExistsError:
-    #     pass
-    # shutil.copy2(local_file, os.path.expanduser(local_mirror))
-    # shutil.copy2('/Users/ant12/Documents/git-projects/layout-code/klayout-ipc/examples/box.gds',
-    #              '/Users/ant12/tmp_lyipc/klayout-ipc/examples/')
     rsync(local_file, get_target_hostname() + ':' + remote_path)
-    return remote_file
+    return os.path.join(host_HOME(), remote_file)
