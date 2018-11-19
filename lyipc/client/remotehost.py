@@ -58,7 +58,10 @@ def call_ssh(command):
 
 
 def host_HOME():
-    return call_ssh(['echo', '$HOME']).strip()
+    if not is_host_remote():
+        return os.environ['HOME']
+    else:
+        return call_ssh(['echo', '$HOME']).strip()
 
 
 def rsync(source, dest, verbose=True):
