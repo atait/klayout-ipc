@@ -10,26 +10,33 @@ def set_target_hostname(hostalias, persist=False):
         Instructions: https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2
 
         Example: atait@tait-computer
+
+        persist means through the terminal session. It sets environment variable
+        not persist means through this python session. It doesn't last as long. It takes precedence.
     '''
     global target_host
     if hostalias == 'localhost':
         hostalias = socket.gethostbyname(hostalias)
-    target_host = hostalias
     if persist:
         os.environ['LYIPCTARGET'] = target_host
+    else:
+        target_host = hostalias
 
 
 def get_target_hostname(incl_user=True):
-    try:
-        host = os.environ['LYIPCTARGET']
-    except KeyError:
+    if target_host is not None:
         host = target_host
+    else:
+        try:
+            host = os.environ['LYIPCTARGET']
+        except KeyError:
+            return socket.gethostbyname('localhost')
     if not incl_user:
         host = host.split('@')[-1]
     return host
 
 
-set_target_hostname('localhost')
+# set_target_hostname('localhost')
 
 
 def is_host_remote():
@@ -53,7 +60,8 @@ def call_report(command, verbose=True):
 def call_ssh(command):
     # command[0] = '"' + command[0]
     # command[-1] = command[-1] + '"'
-    ssh_command = ['ssh', '-t', get_target_hostname()] + command
+    ssh_command = ['ssh', '-qt', get_target_hostname()]  # q silences welcome banner, t retains text coloring
+    ssh_command += command
     return call_report(ssh_command)
 
 
