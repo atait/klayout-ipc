@@ -1,4 +1,6 @@
 # Inter-process communication for KLayout (lyipc)
+[![Build Status](https://travis-ci.com/atait/klayout-ipc.svg?branch=master)](https://travis-ci.com/atait/klayout-ipc)
+[![DOI](https://zenodo.org/badge/138979016.svg)](https://zenodo.org/badge/latestdoi/138979016)
 
 [KLayout](https://www.klayout.de/index.php) is a layout editor and viewer. It is arguably the highest-performing and most advanced layout viewer in the 10<sup>0</sup>€/$ –
  10<sup>4</sup>€/$ range. KLayout is free software. Among its editing functions is a generic scripting interface (GSI) that supports Python and Ruby, and there are other python scripting projects that specialize in various other ways (e.g. phidl, gdspy, nazca, MatlabGDSPhotonics, KiCad, etc.).
