@@ -102,5 +102,68 @@ The former is faster because a new klayout instance is not created, but of cours
 
 Usage examples for klayout and non-klayout layout clients are included in this repo in the "examples" folder.
 
+
+## Long shot wishlist item: remote jobs
+Tests run a lot. Integration tests of entire wafers can take a really long time. Yet they can be parallelized – on the good side of Amdahl's law. This also has relevance to dataprep
+
+Here is the process
+
+1. [laptop] initiates klayout IPC configured for incoming connections (firewalled)
+1. [laptop (or CI)] command for test
+1. [laptop] sends IPC port info to remote HPC
+1. [laptop] rsyncs ref_layouts and the new code, changes only, to the remote computer
+    - you might also have to synchronize lygadgets, or just do it manually
+    - can we override rsync's archive detection with geometry instead of binary
+    - no it is based on file modification time, so we are good
+1. [laptop] sends command to remote computer to initiate test
+1. [remote HPC] runs tests on all cores using pytest-xdist and klayout tiling
+1. [remote HPC] sends progress reports
+    - pipe pytest output by redirecting stdout?
+1. [remote HPC] if there are errors, sends the layout pairs to the IPC server on the laptop
+1. [remote HPC] sends some kind of completion signal
+1. [laptop] rsyncs run_layouts for further examination
+    - only the failures?
+
+Following are the steps to enabling this
+
+#### Network IPC (Done)
+Run a server on one computer. Configure something in lyipc in the second computer. Send lyipc commands. At first, do load with the gds already on the first computer. Next, combine with rsync and gds on local computer with client.load
+
+#### stdout piping (don't bother)
+Test script will look something like
+```python
+with redirect_stdout():
+    print('heyo')
+```
+This script should be initiated by the laptop but run on the HPC.
+
+I got this working, but its not live.
+
+#### remote build (Done)
+1. [laptop user] lyipc-job script.py
+1. [laptop] rsync script.py
+1. [HPC] python script.py
+1. [HPC] rsync output.gds
+
+Should this use container functions?
+
+#### file transfer and IPC and lytest (done)
+Set some configuration of lytest, which sets some configuration of lyipc. Run `lytest diff file1.gds file2.gds`. These files are shipped to remote. XOR is run there. Error is detected and sent back to the klayout GUI of the first computer. This will involve actual file transfer.
+
+Edit: this did not set anything in lytest. It was a matter of lyipc:`set_target_hostname` and the HPC using `ship_file` to get things back down.
+
+Notes: to send a file for testing, to call commands and get printouts, to rsync (either direction) -- you need a one-way RSA authorization. If you want to run remote tests that pop up in the local GUI, that currently *requires a two-way RSA authorization*. When the HPC is running, its lytest has the ball (kind of). It decides when to send a pair of files to lyipc. Then lyipc notices that it has to ship those files remotely, requiring rsync. Huh, what if the QTcpSocket in lyipc could send a notice back down that said: rsync this thing from me; it is ready.
+
+
+#### script building
+Not yet... just need to sync the ref_layouts.
+lytest not only sends a ref_layout but also a script. This scripted layout is built remotely. The XOR is done remotely.
+
+
+#### tiling
+To take full advantage, we eventually want to distribute tiles over cores. At first, we will get good results from xdist alone... when it comes to testing, but not dataprep.
+
+Remember to pip install pytest-xdist. The error message is not helpful.
+
 #### Author: Alex Tait, June 2018
 #### National Institute of Standards and Technology, Boulder, CO, USA
