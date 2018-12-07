@@ -152,15 +152,18 @@ Set some configuration of lytest, which sets some configuration of lyipc. Run `l
 
 Edit: this did not set anything in lytest. It was a matter of lyipc:`set_target_hostname` and the HPC using `ship_file` to get things back down.
 
+Notes: to send a file for testing, to call commands and get printouts, to rsync (either direction) -- you need a one-way RSA authorization. If you want to run remote tests that pop up in the local GUI, that currently *requires a two-way RSA authorization*. When the HPC is running, its lytest has the ball (kind of). It decides when to send a pair of files to lyipc. Then lyipc notices that it has to ship those files remotely, requiring rsync. Huh, what if the QTcpSocket in lyipc could send a notice back down that said: rsync this thing from me; it is ready.
+
 
 #### script building
 Not yet... just need to sync the ref_layouts.
 lytest not only sends a ref_layout but also a script. This scripted layout is built remotely. The XOR is done remotely.
 
+
 #### tiling
 To take full advantage, we eventually want to distribute tiles over cores. At first, we will get good results from xdist alone... when it comes to testing, but not dataprep.
 
-
+Remember to pip install pytest-xdist. The error message is not helpful.
 
 #### Author: Alex Tait, June 2018
 #### National Institute of Standards and Technology, Boulder, CO, USA
