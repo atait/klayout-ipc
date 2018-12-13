@@ -24,6 +24,14 @@ def set_target_hostname(hostalias, persist=False):
 
 
 def get_target_hostname(incl_user=True):
+    ''' Target host information
+
+        incl_user=True will give you something like 'atait@tait-computer'.
+        Use this for rsync.
+
+        incl_user=False will give 'tait-computer'
+        Use this for ssh.
+    '''
     if target_host is not None:
         host = target_host
     else:
@@ -40,7 +48,7 @@ def get_target_hostname(incl_user=True):
 
 
 def is_host_remote():
-    return get_target_hostname() != socket.gethostbyname('localhost')
+    return get_target_hostname(incl_user=False) != socket.gethostbyname('localhost')
 
 
 def call_report(command, verbose=True):
@@ -75,17 +83,33 @@ def rsync(source, dest, verbose=True):
     call_report(rsync_call, verbose=verbose)
 
 
-def ship_file(local_file):
+def ship_file(local_file, target_host=None):
     ''' returns the name of the remote file
         This currently assumes that the host has the same operating system separator as this one (e.g. "/")
     '''
     if not is_host_remote():
         return local_file
+    if target_host is None:
+        target_host = get_target_hostname()
     # where are we going to put it
     local_file = os.path.realpath(local_file)
     # rel_filepath = os.sep.join(local_file.split(os.sep)[-3:-1])  # pick off a few directories to avoid name clashes
     rel_filepath = ''
     remote_path = os.path.join('tmp_lypic', rel_filepath)
     remote_file = os.path.join(remote_path, os.path.basename(local_file))
-    rsync(local_file, get_target_hostname() + ':' + remote_path)
+    rsync(local_file, target_host + ':' + remote_path)
     return os.path.join(host_HOME(), remote_file)
+
+
+def retrieve_file(remote_file, target_host=None):
+    ''' As of now, you must specify the full path, except ~ is allowed if the remote computer is UNIX.
+        returns the path to the local file, which is placed in the current directory by default.
+        target_host has the format of atait@tait-computer. Default is the persistent setting.
+    '''
+    if not is_host_remote() and target_host is None:
+        return remote_file
+    if target_host is None:
+        target_host = get_target_hostname()
+    local_file = os.path.basename(remote_file)
+    rsync(target_host + ':' + remote_file, local_file)
+    return local_file
