@@ -74,7 +74,10 @@ def call_ssh(command):
 
 
 def host_HOME():
-    return call_ssh(['echo', '$HOME']).strip()
+    if not is_host_remote():
+        return os.environ['HOME']
+    else:
+        return call_ssh(['echo', '$HOME']).strip()
 
 
 def rsync(source, dest, verbose=True):
@@ -87,7 +90,7 @@ def ship_file(local_file, target_host=None):
     ''' returns the name of the remote file
         This currently assumes that the host has the same operating system separator as this one (e.g. "/")
     '''
-    if not is_host_remote():
+    if not is_host_remote() and target_host is None:
         return local_file
     if target_host is None:
         target_host = get_target_hostname()
