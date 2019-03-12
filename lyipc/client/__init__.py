@@ -68,3 +68,8 @@ def handle_query(retString):
 
 from lyipc.client.general import *
 from lyipc.client.dependent import *
+
+# for easy access, just: from lyipc.client import kqp
+from lyipc.client import generate_display_function
+kqp = generate_display_function(None, 'debugging.gds')
+

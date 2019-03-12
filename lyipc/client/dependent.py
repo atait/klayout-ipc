@@ -7,47 +7,12 @@ import time
 from functools import wraps
 from lyipc.client.general import load, reload
 
-
-global __unbound_method_names
-__unbound_method_names = dict()  # this is a cache to avoid lots of importing
-def _get_write_method(writable_obj):
-    ''' This function resolves write methods for cell/layout objects across languages.
-
-        If the class is a phidl.Device, we will dynamically import gdspy, then check if it is a subclass of gdspy.Cell.
-        It is, so then then we return the "write_gds" method which is bound to ``writable_obj``.
-
-        Args:
-            (object): layout data object that can be written, typically Cell or Layout or Device
-
-        Returns:
-            (func): bound method corresponding to a method that produces a file output (often GDS)
-    '''
-    global __unbound_method_names
-
-    if type(writable_obj) not in __unbound_method_names.keys():
-        # It has not been added to the cache yet. Search for the method in the library.
-        try:
-            import gdspy  # phidl and others are based on gdspy, so this covers them
-            if isinstance(writable_obj, gdspy.Cell):
-                __unbound_method_names[type(writable_obj)] = 'write_gds'
-        except ImportError:
-            pass
-
-        try:
-            import pya
-            if isinstance(writable_obj, (pya.Cell, pya.Layout)):
-                __unbound_method_names[type(writable_obj)] = 'write'
-        except ImportError:
-            pass
-
-    found_meth_name = __unbound_method_names[type(writable_obj)]
-    return getattr(writable_obj, found_meth_name)
+from lygadgets import any_write
 
 
 def safe_write(writable_obj, filename, write_kwargs=None):
     ''' Writes a temporary file then waits until it finishes writing before moving to the desired filename
     '''
-    write_func = _get_write_method(writable_obj)
     dirname, basename = os.path.split(filename)
     temp_filename = os.path.join(dirname, '~.' + basename)
     if write_kwargs is None:
@@ -57,7 +22,7 @@ def safe_write(writable_obj, filename, write_kwargs=None):
     except FileNotFoundError:
         pass
     try:
-        write_func(temp_filename, **write_kwargs)
+        any_write(writable_obj, temp_filename, **write_kwargs)
         os.rename(temp_filename, filename)
     except Exception as err:
         try:
