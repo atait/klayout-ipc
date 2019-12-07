@@ -15,7 +15,6 @@ import pya
 
 # As of now, port is hard coded and there is no way to stop it besided closing the app
 # We have to make sure that a second server doesn't come along and clash
-global __active_server
 __active_server = None
 def run_server():
     global __active_server
