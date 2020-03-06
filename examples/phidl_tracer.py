@@ -5,9 +5,8 @@
 try:
     import lyipc
 except ImportError:
-    print('Warning: lyipc is not installed on your PYTHONPATH. Use')
-    print('pip install ~/.klayout/salt/klayout-ipc/python')
-    print('to install. Continuing with relative path for now...\n' + '-' * 50)
+    print('Warning: lyipc is not installed on your PYTHONPATH.')
+    print('Continuing with relative path for now...\n' + '-' * 50)
     import sys
     from os.path import join, dirname
     sys.path.append(join(dirname(__file__), '..', 'python'))

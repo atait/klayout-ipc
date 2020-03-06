@@ -30,9 +30,9 @@ layout.write(gdsname)
 ipc.load(gdsname)
 
 
-### The debug workflow ###
+### Using python debugger and quick plot function ###
 
-kqp = ipc.generate_display_function(TOP, 'box.gds')
+from lyipc import kqp
 
 origin = pya.DPoint(0, 0)
 turn = 0
@@ -48,4 +48,4 @@ for i in range(19):
     TOP.shapes(l1).insert(box2)
     origin = box2.p2 + pya.DVector(-turn, 0)
 
-    kqp(fresh=True)
+    kqp(layout, fresh=True)
