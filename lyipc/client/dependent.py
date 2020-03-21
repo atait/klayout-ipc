@@ -51,7 +51,7 @@ def klayout_quickplot(writable_obj, filename, fresh=False, write_kwargs=None):
     if is_host_remote():
         fresh = True
     # Tell remote klayout GUI to load/reload it
-    if fresh:
+    if fresh or is_host_remote():
         load(filename)
     else:
         reload()
