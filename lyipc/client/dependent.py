@@ -6,6 +6,7 @@ import os
 import time
 from functools import wraps
 from lyipc.client.general import load, reload
+from lyipc.client.remotehost import is_host_remote
 
 from lygadgets import any_write
 
@@ -47,7 +48,7 @@ def klayout_quickplot(writable_obj, filename, fresh=False, write_kwargs=None):
     # Write and wait for filename to finish writing
     safe_write(writable_obj, filename, write_kwargs)
     # Tell remote klayout GUI to load/reload it
-    if fresh:
+    if fresh or is_host_remote():
         load(filename)
     else:
         reload()
