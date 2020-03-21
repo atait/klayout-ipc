@@ -20,6 +20,11 @@ import phidl
 
 
 debug_file = os.path.realpath('debuglobal.gds')
+
+# Clear and open the file
+if not os.path.isfile(debug_file):
+    from lygadgets import any_write
+    any_write(phidl.Device(), debug_file)
 ipc.load(debug_file)
 
 def simple_create():
