@@ -9,9 +9,8 @@
 try:
     import lyipc
 except ImportError:
-    print('Warning: lyipc is not installed on your PYTHONPATH. Use')
-    print('pip install ~/.klayout/salt/klayout-ipc/python')
-    print('to install. Continuing with relative path for now...\n' + '-' * 50)
+    print('Warning: lyipc is not installed on your PYTHONPATH.')
+    print('Continuing with relative path for now...\n' + '-' * 50)
     import sys
     from os.path import join, dirname
     sys.path.append(join(dirname(__file__), '..', 'python'))
@@ -41,9 +40,9 @@ TOP.write_gds(gdsname)
 ipc.load(gdsname)
 
 
-### The debug workflow ###
+### Using python debugger and quick plot function ###
 
-kqp = ipc.generate_display_function(TOP, 'box.gds')
+from lyipc import kqp
 
 origin = (0, 0)
 turn = 0
@@ -59,4 +58,4 @@ for i in range(19):
     TOP.add_ref(box2)
     origin = (box2.xmax - turn, box2.ymax)
 
-    kqp(fresh=True)
+    kqp(TOP, fresh=True)

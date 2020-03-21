@@ -53,24 +53,26 @@ def is_host_remote():
 
 def call_report(command, verbose=True):
     if verbose:
-        print = lambda *args: None
-    print('\n[[' + ' '.join(command) + ']]\n')
+        myprint = print
+    else:
+        myprint = lambda *args: None
+    myprint('\n[[' + ' '.join(command) + ']]\n')
     try:
         ret = subprocess.check_output(command).decode()
     except subprocess.CalledProcessError as err:
-        print(err.output.decode())
+        myprint(err.output.decode())
         raise
     else:
-        print(ret)
+        myprint(ret)
         return ret
 
 
-def call_ssh(command):
+def call_ssh(command, verbose=True):
     # command[0] = '"' + command[0]
     # command[-1] = command[-1] + '"'
     ssh_command = ['ssh', '-qt', get_target_hostname()]  # q silences welcome banner, t retains text coloring
     ssh_command += command
-    return call_report(ssh_command)
+    return call_report(ssh_command, verbose=verbose)
 
 
 def host_HOME():

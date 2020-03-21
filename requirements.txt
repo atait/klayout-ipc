@@ -1,3 +1,2 @@
 klayout
-PyQt5
 phidl

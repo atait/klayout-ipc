@@ -47,6 +47,9 @@ def klayout_quickplot(writable_obj, filename, fresh=False, write_kwargs=None):
     '''
     # Write and wait for filename to finish writing
     safe_write(writable_obj, filename, write_kwargs)
+    # reload does not work remote
+    if is_host_remote():
+        fresh = True
     # Tell remote klayout GUI to load/reload it
     if fresh or is_host_remote():
         load(filename)
@@ -61,7 +64,7 @@ def generate_display_function(default_writable_obj, default_filename):
             TOP = Layout()
             kqp = make_display_function(TOP, 'debugging.gds')
             ...
-            kqp()
+            kqp(...)
     '''
     default_filename = os.path.realpath(default_filename)
     @wraps(klayout_quickplot)
