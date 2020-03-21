@@ -11,7 +11,7 @@ import os
 from lyipc.client.general import *
 from lyipc.client.dependent import *
 
-
+ignore_layers = []
 def trace_pyainsert(layout, file):
     ''' Writes to file and loads in the remote instance whenever pya.Shapes.insert is called
         "layout" is what will be written to file and loaded there.
@@ -37,7 +37,7 @@ def trace_pyainsert(layout, file):
     def new_shapes(self, *args, **kwargs):
         theshape = pya.Cell.old_shapes(self, *args, **kwargs)
         if args[0] not in ignore_layers:
-            theshape.traced_cell = self.name
+            theshape.traced_cell = self.cell_index
         return theshape
     pya.Cell.shapes = new_shapes
 

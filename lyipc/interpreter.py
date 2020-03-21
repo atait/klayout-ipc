@@ -55,6 +55,9 @@ def parse_message(msg):
             main = pya.Application.instance().main_window()
             main.cm_reload()
 
+        elif tokens[0] == 'view':
+            main.current_view().active_cellview() = int(tokens[1])
+
         elif tokens[0] == 'ping':
             message_loud('I heard something')
 

@@ -34,6 +34,10 @@ def kill():
     send('kill')
 
 
+def view(cell_index):
+    send('view ' + str(cell_index))
+
+
 def diff(file1, file2):
     pass  # TODO
 
