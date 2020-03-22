@@ -3,12 +3,9 @@
 '''
 from __future__ import print_function
 import phidl
-from phidl import Device
 
 import time
 import os
-from contextlib import contextmanager
-from functools import wraps
 
 # Makes it so that only one import is needed: lyipc.client.phidl will drop in for lyipc.client
 from lyipc.client.general import *
