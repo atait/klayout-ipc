@@ -13,7 +13,6 @@ except ImportError:
 
 
 import lyipc.client.phidl as ipc
-# from lyipc.client.phidl import trace_phidladd
 import os
 import time
 import phidl
@@ -27,16 +26,23 @@ if not os.path.isfile(debug_file):
     any_write(phidl.Device(), debug_file)
 ipc.load(debug_file)
 
-def simple_create():
+
+def simple_create(grids=4):
+    t0 = time.time()
     D = phidl.Device()
     ipc.trace_phidladd(D, 'debuglobal.gds')
 
     l1 = phidl.Layer(1)
-    for i in range(4):
-        for j in range(4):
+    for i in range(grids):
+        for j in range(grids):
             box = phidl.geometry.rectangle(size=(10, 10), layer=l1)
             box.move((15 * i, 15 * j))
             D << box
+    print(time.time() - t0)
 
 
-simple_create()
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        simple_create()
+    else:
+        simple_create(int(sys.argv[1]))

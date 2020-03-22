@@ -4,7 +4,7 @@
 import os
 import time
 import numpy as np
-from functools import partial
+import time
 
 import pya
 import sys
@@ -18,32 +18,25 @@ if not os.path.isfile(debug_file):
     any_write(pya.Layout(), debug_file)
 ipc.load(debug_file)
 
-def simple_create():
+
+def simple_create(grids=4):
+    t0 = time.time()
     layout = pya.Layout()
     ipc.trace_pyainsert(layout, debug_file)
+
     layout.dbu = 0.001
     TOP = layout.create_cell('TOP')
     l1 = layout.insert_layer(pya.LayerInfo(1, 0))
 
-    for i in range(4):
-        for j in range(4):
+    for i in range(grids):
+        for j in range(grids):
             box = pya.DBox(0, 0, 10, 10)
             box.move(15 * i, 15 * j)
             TOP.shapes(l1).insert(box)
+    print(time.time() - t0)
 
-
-def tough_create():
-    layout = pya.Layout()
-    ipc.trace_pyainsert(layout, debug_file)
-    layout.dbu = 0.001
-    TOP = layout.create_cell('TOP')
-    l1 = layout.insert_layer(pya.LayerInfo(1, 0))
-
-    for i in range(51):
-        for j in range(51):
-            box = pya.DBox(0, 0, 10, 10)
-            box.move(15 * i, 15 * j)
-            TOP.shapes(l1).insert(box)
-
-
-simple_create()
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        simple_create()
+    else:
+        simple_create(int(sys.argv[1]))
