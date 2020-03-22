@@ -55,9 +55,6 @@ def parse_message(msg):
             main = pya.Application.instance().main_window()
             main.cm_reload()
 
-        elif tokens[0] == 'view':
-            main.current_view().active_cellview() = int(tokens[1])
-
         elif tokens[0] == 'ping':
             message_loud('I heard something')
 
@@ -69,6 +66,15 @@ def parse_message(msg):
                 quiet_load_layout(filename, mode)
             else:
                 quiet_load_layout(filename)
+
+        elif tokens[0] == 'cellview':
+            cellname = tokens[1]
+            main = pya.Application.instance().main_window()
+            view = main.current_view()
+            cv = view.active_cellview()
+            cv.set_cell_name(cellname)
+            # show all layers of hierarchy
+            # fit to screen
 
         else:
             message('Received {}'.format(msg))

@@ -34,8 +34,8 @@ def kill():
     send('kill')
 
 
-def view(cell_index):
-    send('view ' + str(cell_index))
+def view(cellname):
+    send('cellview ' + str(cellname))
 
 
 def diff(file1, file2):

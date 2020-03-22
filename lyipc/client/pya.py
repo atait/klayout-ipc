@@ -37,7 +37,7 @@ def trace_pyainsert(layout, file):
     def new_shapes(self, *args, **kwargs):
         theshape = pya.Cell.old_shapes(self, *args, **kwargs)
         if args[0] not in ignore_layers:
-            theshape.traced_cell = self.cell_index
+            theshape.traced_cell = self.cell_name
         return theshape
     pya.Cell.shapes = new_shapes
 
