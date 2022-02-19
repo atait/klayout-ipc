@@ -28,11 +28,13 @@ else:
     # localhost = 'localhost'
 
 
-def send(message='ping 1234', port=lyipc.PORT):
+def send(message='ping 1234', port=None):
     ''' Sends a raw message
 
         Trick here is that PyQt5 does not do automatic str<->byte encoding, but pya does. Also something weird with the addresses
     '''
+    if port is None:
+        port = lyipc.PORT
     payload = message + '\r\n'
     psock = QTcpSocket()
     if not isGSI():
@@ -61,15 +63,12 @@ def handle_query(retString):
         traceback_repr = retString[4:]
         # The traceback is sent as a single line as a string repr. Now convert back to multi-line
         traceback_str = traceback_repr.encode("utf-8").decode('unicode_escape').strip("'")
-        print('\n' + traceback_str)
-        print('^ Server-side error ^')
-        sys.exit(1)
+        raise ServerSideError(traceback_str + '^ Server-side error ^')
 
 
 from lyipc.client.general import *
 from lyipc.client.dependent import *
 
 # for easy access, just: from lyipc.client import kqp
-from lyipc.client import generate_display_function
 kqp = generate_display_function(None, 'debugging.gds')
 

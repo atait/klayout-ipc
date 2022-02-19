@@ -5,7 +5,7 @@ from __future__ import print_function
 import os
 import time
 from functools import wraps
-from lyipc.client.general import load, reload
+from lyipc.client.general import load, reload, ServerSideError
 from lyipc.client.remotehost import is_host_remote
 
 from lygadgets import any_write
@@ -54,7 +54,14 @@ def klayout_quickplot(writable_obj, filename, fresh=False, write_kwargs=None):
     if fresh or is_host_remote():
         load(filename)
     else:
-        reload()
+        try:
+            reload()
+        except ServerSideError as err:
+            breakpoint()
+            if 'needs a layout' in err.args[0]:
+                load(filename)
+            else:
+                raise
 
 
 def generate_display_function(default_writable_obj, default_filename):
