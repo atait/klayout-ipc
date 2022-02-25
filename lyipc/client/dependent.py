@@ -57,7 +57,6 @@ def klayout_quickplot(writable_obj, filename, fresh=False, write_kwargs=None):
         try:
             reload()
         except ServerSideError as err:
-            breakpoint()
             if 'needs a layout' in err.args[0]:
                 load(filename)
             else:
