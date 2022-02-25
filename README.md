@@ -1,5 +1,6 @@
 # Inter-process communication for KLayout (lyipc)
 [![Build Status](https://travis-ci.com/atait/klayout-ipc.svg?branch=master)](https://travis-ci.com/atait/klayout-ipc)
+[![Downloads](https://static.pepy.tech/personalized-badge/lyipc?period=total&units=international_system&left_color=grey&right_color=brightgreen&left_text=Downloads)](https://pepy.tech/project/lyipc)
 [![DOI](https://zenodo.org/badge/138979016.svg)](https://zenodo.org/badge/latestdoi/138979016)
 
 Approaches for integrated circuit layout fall into two main categories: GUI-driven, interactive design; and script-driven, non-interactive programming. The latter is more repeatable, modifiable, and reusable once the script has been written; however, the layout object state and its evolution through time is realtively opaque to the programmer.
