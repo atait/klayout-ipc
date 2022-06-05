@@ -59,13 +59,29 @@ def parse_message(msg):
             message_loud('I heard something')
 
         elif tokens[0] == 'load':
-            filename = os.path.realpath(tokens[1])
-            message(filename)
-            if len(tokens) > 2:
-                mode = int(tokens[2])
-                quiet_load_layout(filename, mode)
+            if tokens[1].startswith('"'):
+                # Processing filenames with spaces
+                filename = tokens[1][1:]
+                for iword in range(2, len(tokens)):
+                    word = tokens[iword]
+                    filename += ' '
+                    if word.endswith('"'):
+                        filename += word[:-1]
+                        break
+                    else:
+                        filename += word
+                else:
+                    raise ValueError('Malformed filename with only one quote')
             else:
-                quiet_load_layout(filename)
+                iword = 1
+                filename = tokens[1]
+            filename = os.path.realpath(filename)
+            message(filename)
+            if iword < len(tokens) - 1:
+                mode = int(tokens[-1])
+            else:
+                mode = 0
+            quiet_load_layout(filename, mode)
 
         elif tokens[0] == 'cellview':
             cellname = tokens[1]

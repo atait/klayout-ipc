@@ -24,7 +24,7 @@ def load(filename, mode=None):
     filename = fast_realpath(filename)
     if is_host_remote():
         filename = ship_file(filename)  # filename has changed to reflect what it is on the remote system
-    tokens = ['load', filename]
+    tokens = ['load', '"' + filename + '"']
     if mode is not None:
         tokens.append(str(mode))
     send(' '.join(tokens))

@@ -8,7 +8,7 @@ def readme():
 
 
 setup(name='lyipc',
-      version='0.2.10',
+      version='0.2.11',
       description='Inter-process communication for Klayout',
       long_description=readme(),
       long_description_content_type="text/markdown",
