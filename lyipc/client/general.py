@@ -8,8 +8,15 @@ import time
 from functools import wraps
 
 
-def reload():
-    send('reload view')
+def reload(fallback_file=None):
+    try:
+        send('reload view')
+    except ServerSideError as err:
+        if 'needs a layout' in err.args[0]:
+            if fallback_file is not None:
+                load(fallback_file)
+        else:
+            raise
 
 
 fast_realpath = lru_cache(maxsize=4)(os.path.realpath)  # Since the argument is going to be the same every time

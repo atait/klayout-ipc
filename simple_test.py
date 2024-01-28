@@ -1,19 +1,7 @@
-import lygadgets
-from lygadgets import any_write, any_read
-lygadgets.patch_environment()
-import os
+from lyipc import kqp
+import phidl.geometry as pg
+import random
 
-def test_writes():
-    # Test pya writables
-    import pya
-    layout = pya.Layout()
-    any_write(layout, 'tempfile.gds')
-    TOP = layout.create_cell('TOP')
-    any_write(TOP, 'tempfile.gds')
-
-
-    # Test phidl writables
-    import phidl
-    box2 = phidl.geometry.rectangle((20, 20))
-    any_write(box2, 'tempfile.gds')
-    os.remove('tempfile.gds')
+height = random.randint(5, 30)  # Introduce some randomness to see reload better
+box = pg.rectangle((20, height))
+kqp(box)

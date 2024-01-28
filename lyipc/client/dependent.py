@@ -51,16 +51,10 @@ def klayout_quickplot(writable_obj, filename, fresh=False, write_kwargs=None):
     if is_host_remote():
         fresh = True
     # Tell remote klayout GUI to load/reload it
-    if fresh or is_host_remote():
+    if fresh:
         load(filename)
     else:
-        try:
-            reload()
-        except ServerSideError as err:
-            if 'needs a layout' in err.args[0]:
-                load(filename)
-            else:
-                raise
+        reload(filename)
 
 
 def generate_display_function(default_writable_obj, default_filename):
