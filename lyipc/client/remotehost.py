@@ -101,9 +101,9 @@ def ship_file(local_file, target_host=None):
     # rel_filepath = os.sep.join(local_file.split(os.sep)[-3:-1])  # pick off a few directories to avoid name clashes
     rel_filepath = ''
     remote_path = os.path.join('tmp_lypic', rel_filepath)
-    remote_file = os.path.join(remote_path, os.path.basename(local_file))
+    remote_file = os.path.join(host_HOME(), remote_path, os.path.basename(local_file))
     rsync(local_file, target_host + ':' + remote_path)
-    return os.path.join(host_HOME(), remote_file)
+    return remote_file
 
 
 def retrieve_file(remote_file, target_host=None):

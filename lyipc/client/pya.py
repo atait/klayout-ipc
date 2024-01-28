@@ -1,15 +1,13 @@
 ''' These are functions specific to pya
     There is not necessarily any similarity with implementation in other languages
+    If pya not present, lygadgets will allow import but not use of these functions
 '''
 from __future__ import print_function
 from lygadgets import pya
 
-import time
-import os
-
-# Makes it so that only one import is needed: lyipc.client.phidl will drop in for lyipc.client
-from lyipc.client.general import *
-from lyipc.client.dependent import *
+# Makes it so that only one import is needed: lyipc.client.pya will drop in for lyipc.client
+from lyipc.client.general import view
+from lyipc.client.dependent import klayout_quickplot
 
 ignore_layers = []
 def trace_pyainsert(layout, file):

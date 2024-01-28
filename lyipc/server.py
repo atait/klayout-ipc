@@ -6,11 +6,10 @@ from __future__ import print_function
 
 import socket
 import lyipc
-from lygadgets import message, isGSI
+from lygadgets import message, isGSI, pya
 
 if not isGSI():
     raise RuntimeError('Non-klayout serving does not make sense')
-import pya
 
 
 # As of now, port is hard coded and there is no way to stop it besided closing the app
@@ -45,7 +44,9 @@ class KlayoutServer(pya.QTcpServer):
         pya.QObject.connect(connection, signal, connection, slot)
 
 
-    def __init__(self, port=lyipc.PORT, parent=None):
+    def __init__(self, port=None, parent=None):
+        if port is None:
+            port = lyipc.PORT
         pya.QTcpServer.__init__(self, parent)
         localhost = pya.QHostAddress()
         self.listen(localhost, port)

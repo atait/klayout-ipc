@@ -9,7 +9,7 @@ import os
 
 # Makes it so that only one import is needed: lyipc.client.phidl will drop in for lyipc.client
 from lyipc.client.general import *
-from lyipc.client.dependent import *
+from lyipc.client.dependent import klayout_quickplot
 
 
 def trace_phidladd(device, file):

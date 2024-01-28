@@ -6,14 +6,10 @@
         - execute a macro
 '''
 from __future__ import print_function
-from lygadgets import message, message_loud, isGSI
+from lygadgets import message, message_loud, isGSI, pya
 import lyipc.server
 import os
 import traceback
-
-if not isGSI():
-    raise RuntimeError('Non-klayout serving does not make sense')
-import pya
 
 
 def quiet_load_layout(filename, mode=0):
@@ -31,7 +27,7 @@ def quiet_load_layout(filename, mode=0):
         view = main.load_layout(filename, mode)
     except RuntimeError as err:
         if err.args[0].split()[0] in ['Stream', 'Unexpected']:
-            print(err)
+            message(err)
         else:
             raise
 

@@ -40,9 +40,5 @@ def view(cellname):
     send('cellview ' + str(cellname))
 
 
-def diff(file1, file2):
-    pass  # TODO
-
-
 class ServerSideError(RuntimeError):
     pass
