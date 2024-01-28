@@ -81,6 +81,16 @@ where `my_Device` is a layout object, such as a `Cell` in pya or a `Device` in p
 
 Usage examples for klayout and non-klayout clients are included in this repo in the "examples" folder.
 
+#### Command line interface
+As of v0.2.14, there is a CLI entry point `lyipc_reload` for convenience.
+With no arguments, it reloads the current view. When a filename is provided, `lyipc_reload` will detect that it needs a fresh load. With `--fresh` (or `-f`), the file is always loaded as a new file. `lyipc_reload -f x.gds` is similar to `open x.gds` on some systems.
+
+```bash
+lyipc_reload output.gds  # Opens fresh if needed
+python script_that_affect_outputgds
+lyipc_reload output.gds  # Reloads without closing
+lyipc_reload  # Same thing, unless the user has closed the view
+```
 
 ## Remote debug and jobs
 Using ssh, rsync, sshfs, and lyipc, you can work on a remote, high performance computer the same way you work on your laptop - without being able to notice the difference. These features are still somewhat experimental. You must first configure two-way RSA authentication. Here is the process:

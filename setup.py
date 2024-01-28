@@ -20,5 +20,7 @@ setup(name='lyipc',
       install_requires=['lygadgets>=0.1.19'],
       package_data={'': ['*.lym']},
       include_package_data=True,
-      cmdclass={},
+      entry_points={'console_scripts': [
+        'lyipc_reload=lyipc.client.command_line:cm_reload',
+      ]},
       )
